@@ -44,6 +44,12 @@ lib/          Shared utilities, including the Supabase client
 types/        Shared TypeScript types, including generated Supabase types
 ```
 
+## Database schema
+
+The full Postgres schema (tables, foreign keys, and Row Level Security
+policies) lives in `supabase/migrations/`. See `supabase/README.md` for how
+roles work and how to regenerate types after applying a migration.
+
 ## Deployment
 
 This project is ready to deploy on [Vercel](https://vercel.com). See the
