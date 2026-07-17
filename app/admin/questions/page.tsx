@@ -78,7 +78,7 @@ export default async function QuestionsListPage() {
       )}
 
       {questions && questions.length > 0 && (
-        <div className="mt-8 overflow-hidden rounded-xl border border-slate-200">
+        <div className="mt-8 overflow-x-auto rounded-xl border border-slate-200">
           <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-slate-50">
               <tr>
@@ -112,7 +112,7 @@ export default async function QuestionsListPage() {
                   <td className="px-4 py-3 text-sm text-slate-500">
                     {formatDate(q.created_at)}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex items-center justify-end gap-4">
                       <a
                         href={`/admin/questions/${q.id}/edit`}
