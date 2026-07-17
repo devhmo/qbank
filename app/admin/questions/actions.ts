@@ -133,3 +133,38 @@ export async function deleteQuestion(id: string): Promise<ActionResult> {
   revalidatePath("/admin/questions");
   return {};
 }
+
+export async function bulkPublishQuestions(
+  ids: string[]
+): Promise<ActionResult> {
+  if (ids.length === 0) return {};
+
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("questions")
+    .update({ status: "published" })
+    .in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/questions");
+  return {};
+}
+
+export async function bulkDeleteQuestions(
+  ids: string[]
+): Promise<ActionResult> {
+  if (ids.length === 0) return {};
+
+  const supabase = createClient();
+  const { error } = await supabase.from("questions").delete().in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/questions");
+  return {};
+}
