@@ -68,3 +68,33 @@ export interface QuestionFormInput {
   status: QuestionStatus;
   choices: Choice[];
 }
+
+// --- Bulk import (Stage 5) -------------------------------------------------
+
+export interface CatalogLookup {
+  subjects: Subject[];
+  systems: System[];
+  topics: Topic[];
+}
+
+// A question parsed from structured text or an Excel row, before the admin
+// has reviewed/edited it in the import preview. `subjectName` / `systemName`
+// / `topicName` are the raw strings found in the source (for display when a
+// name couldn't be matched to an existing catalog entry); `topic_id` is only
+// set once a match is confirmed (by the parser or by the admin picking one
+// in the preview).
+export interface ParsedQuestion {
+  key: string;
+  stem: string;
+  image_url: string | null;
+  difficulty: DifficultyLevel;
+  high_yield: boolean;
+  topic_id: string;
+  subjectName: string;
+  systemName: string;
+  topicName: string;
+  source: string;
+  status: QuestionStatus;
+  choices: Choice[];
+  warnings: string[];
+}

@@ -1,6 +1,7 @@
 const links = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/questions", label: "Questions" },
+  { href: "/admin/import", label: "Import" },
   { href: "/admin/catalog", label: "Catalog" },
 ];
 

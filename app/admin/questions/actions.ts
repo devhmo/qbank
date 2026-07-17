@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { validateQuestionInput } from "@/lib/validateQuestion";
 import type { QuestionFormInput } from "@/types/models";
 
 export interface ActionResult {
@@ -9,32 +10,10 @@ export interface ActionResult {
   questionId?: string;
 }
 
-// Server-side validation. The form also validates client-side for instant
-// feedback, but that can be bypassed — this is the real gate, since the
-// action itself is what actually writes to the database.
-function validate(input: QuestionFormInput): string | null {
-  if (!input.stem.trim()) {
-    return "Question stem is required.";
-  }
-  if (!input.topic_id) {
-    return "Choose a subject, system, and topic.";
-  }
-  if (input.choices.length < 2) {
-    return "Add at least two choices.";
-  }
-  if (input.choices.some((c) => !c.text.trim())) {
-    return "Every choice needs text.";
-  }
-  if (!input.choices.some((c) => c.is_correct)) {
-    return "Select at least one correct choice.";
-  }
-  return null;
-}
-
 export async function createQuestion(
   input: QuestionFormInput
 ): Promise<ActionResult> {
-  const validationError = validate(input);
+  const validationError = validateQuestionInput(input);
   if (validationError) {
     return { error: validationError };
   }
@@ -89,7 +68,7 @@ export async function updateQuestion(
   id: string,
   input: QuestionFormInput
 ): Promise<ActionResult> {
-  const validationError = validate(input);
+  const validationError = validateQuestionInput(input);
   if (validationError) {
     return { error: validationError };
   }

@@ -61,6 +61,12 @@ export default async function AdminPage() {
         >
           View all questions
         </a>
+        <a
+          href="/admin/import"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        >
+          Bulk import
+        </a>
       </div>
     </main>
   );
