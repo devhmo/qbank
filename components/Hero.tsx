@@ -14,14 +14,12 @@ export default function Hero() {
           managing spreadsheets.
         </p>
         <div className="mt-8 flex items-center gap-4">
-          <button
-            type="button"
-            disabled
-            title="Coming in a later stage"
-            className="rounded-lg bg-primary-600 px-5 py-3 text-sm font-medium text-white opacity-50 transition"
+          <a
+            href="/signup"
+            className="rounded-lg bg-primary-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-700"
           >
             Get started
-          </button>
+          </a>
           <a
             href="#about"
             className="text-sm font-medium text-slate-600 transition hover:text-primary-700"

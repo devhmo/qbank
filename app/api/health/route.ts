@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 
 // GET /api/health
 //
@@ -9,6 +9,8 @@ import { supabase } from "@/lib/supabase";
 // (see the RLS policies in supabase/migrations). An empty table still
 // counts as "connected" — we only care whether the request succeeds.
 export async function GET() {
+  const supabase = createClient();
+
   const { error, status } = await supabase
     .from("subjects")
     .select("id", { count: "exact", head: true });
