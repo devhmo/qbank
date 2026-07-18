@@ -98,3 +98,75 @@ export interface ParsedQuestion {
   choices: Choice[];
   warnings: string[];
 }
+
+// --- Quiz engine (Stage 6) --------------------------------------------------
+
+export type QuizMode = "tutor" | "timed" | "exam";
+export type QuizScope = "all" | "unanswered" | "incorrect" | "bookmarked";
+
+export interface HighlightRange {
+  start: number;
+  end: number;
+}
+
+export interface Quiz {
+  id: string;
+  user_id: string;
+  mode: QuizMode;
+  created_at: string;
+  submitted_at: string | null;
+  time_limit_minutes: number | null;
+  paused_at: string | null;
+  total_paused_seconds: number;
+}
+
+// A choice as delivered to the quiz-taking client. `is_correct` and
+// `explanation` are only populated when it's safe to reveal them (Tutor
+// mode, or once the quiz has been submitted) — see app/quiz/[id]/page.tsx,
+// which omits these columns from the query entirely in Timed/Exam mode so
+// they never reach the browser before the student answers.
+export interface QuizChoice {
+  id: string;
+  text: string;
+  order_index: number;
+  is_correct?: boolean;
+  explanation?: string;
+}
+
+export interface QuizQuestionContent {
+  id: string; // question id
+  stem: string;
+  image_url: string | null;
+  difficulty: DifficultyLevel;
+  source: string | null;
+  choices: QuizChoice[];
+}
+
+// One entry the quiz-taking UI renders: a quiz_questions row joined with
+// its question content and current bookmark status.
+export interface QuizItem {
+  quizQuestionId: string;
+  question: QuizQuestionContent;
+  selected_choice_id: string | null;
+  is_correct: boolean | null;
+  time_spent: number;
+  eliminated_choice_ids: string[];
+  highlighted_ranges: HighlightRange[];
+  is_marked: boolean;
+  is_bookmarked: boolean;
+}
+
+export interface QuizCreateFilters {
+  topicIds: string[];
+  difficulties: DifficultyLevel[];
+  scope: QuizScope;
+  numQuestions: number;
+  mode: "tutor" | "timed";
+  timeLimitMinutes: number | null;
+}
+
+export interface SubjectBreakdown {
+  subjectName: string;
+  correct: number;
+  total: number;
+}
