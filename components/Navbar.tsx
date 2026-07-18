@@ -45,6 +45,12 @@ export default function Navbar({
           </a>
 
           {isLoggedIn && (
+            <a href="/dashboard" className="transition hover:text-primary-700">
+              Dashboard
+            </a>
+          )}
+
+          {isLoggedIn && (
             <a href="/quiz/new" className="transition hover:text-primary-700">
               New Quiz
             </a>

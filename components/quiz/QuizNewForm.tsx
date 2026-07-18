@@ -22,12 +22,18 @@ const SCOPE_OPTIONS: { value: QuizScope; label: string }[] = [
 const inputClasses =
   "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500";
 
-export default function QuizNewForm({ catalog }: { catalog: CatalogLookup }) {
+export default function QuizNewForm({
+  catalog,
+  initialScope = "all",
+}: {
+  catalog: CatalogLookup;
+  initialScope?: QuizScope;
+}) {
   const router = useRouter();
 
   const [selectedTopicIds, setSelectedTopicIds] = useState<Set<string>>(new Set());
   const [difficulties, setDifficulties] = useState<Set<DifficultyLevel>>(new Set());
-  const [scope, setScope] = useState<QuizScope>("all");
+  const [scope, setScope] = useState<QuizScope>(initialScope);
   const [numQuestions, setNumQuestions] = useState(10);
   const [mode, setMode] = useState<"tutor" | "timed">("tutor");
   const [timeLimitMinutes, setTimeLimitMinutes] = useState(60);

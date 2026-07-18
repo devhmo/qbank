@@ -1,8 +1,19 @@
 import { createClient } from "@/lib/supabase/server";
 import QuizNewForm from "@/components/quiz/QuizNewForm";
-import type { Subject, System, Topic } from "@/types/models";
+import type { QuizScope, Subject, System, Topic } from "@/types/models";
 
-export default async function NewQuizPage() {
+const VALID_SCOPES: QuizScope[] = ["all", "unanswered", "incorrect", "bookmarked"];
+
+function parseScope(value: string | string[] | undefined): QuizScope {
+  const scope = Array.isArray(value) ? value[0] : value;
+  return VALID_SCOPES.includes(scope as QuizScope) ? (scope as QuizScope) : "all";
+}
+
+export default async function NewQuizPage({
+  searchParams,
+}: {
+  searchParams: { scope?: string | string[] };
+}) {
   const supabase = createClient();
 
   const [{ data: subjects }, { data: systems }, { data: topics }] =
@@ -32,6 +43,7 @@ export default async function NewQuizPage() {
             systems: (systems as System[]) ?? [],
             topics: (topics as Topic[]) ?? [],
           }}
+          initialScope={parseScope(searchParams.scope)}
         />
       </div>
     </main>
