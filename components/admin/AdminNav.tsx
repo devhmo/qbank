@@ -3,6 +3,7 @@ const links = [
   { href: "/admin/questions", label: "Questions" },
   { href: "/admin/import", label: "Import" },
   { href: "/admin/catalog", label: "Catalog" },
+  { href: "/admin/reports", label: "Reports" },
 ];
 
 export default function AdminNav() {
