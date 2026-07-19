@@ -154,6 +154,7 @@ export interface QuizItem {
   highlighted_ranges: HighlightRange[];
   is_marked: boolean;
   is_bookmarked: boolean;
+  note: string;
 }
 
 export interface QuizCreateFilters {

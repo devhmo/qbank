@@ -70,6 +70,13 @@ export default async function QuizTakingPage({
     .eq("user_id", user.id)
     .in("question_id", questionIds);
 
+  const { data: notes } = await supabase
+    .from("user_notes")
+    .select("question_id, note_text")
+    .eq("user_id", user.id)
+    .in("question_id", questionIds);
+
+  const notesByQuestion = new Map((notes ?? []).map((n) => [n.question_id as string, n.note_text as string]));
   const bookmarkedIds = new Set((bookmarks ?? []).map((b) => b.question_id as string));
   const questionsById = new Map((questions ?? []).map((q) => [q.id as string, q]));
   const choicesByQuestion = new Map<string, QuizChoice[]>();
@@ -103,6 +110,7 @@ export default async function QuizTakingPage({
       highlighted_ranges: qq.highlighted_ranges ?? [],
       is_marked: qq.is_marked,
       is_bookmarked: bookmarkedIds.has(qq.question_id as string),
+      note: notesByQuestion.get(qq.question_id as string) ?? "",
     };
   });
 

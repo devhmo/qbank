@@ -1,22 +1,27 @@
 import Image from "next/image";
+import NoteEditor from "@/components/notes/NoteEditor";
 import type { QuizChoice } from "@/types/models";
 
 const LETTERS = "ABCDEFGHIJ";
 
 export default function ResultsQuestionReview({
   index,
+  questionId,
   stem,
   imageUrl,
   choices,
   selectedChoiceId,
   isCorrect,
+  initialNote,
 }: {
   index: number;
+  questionId: string;
   stem: string;
   imageUrl: string | null;
   choices: QuizChoice[];
   selectedChoiceId: string | null;
   isCorrect: boolean | null;
+  initialNote: string;
 }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6">
@@ -79,6 +84,10 @@ export default function ResultsQuestionReview({
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-4 border-t border-slate-100 pt-4">
+        <NoteEditor questionId={questionId} initialNote={initialNote} />
       </div>
     </div>
   );

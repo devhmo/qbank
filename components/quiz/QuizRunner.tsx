@@ -7,6 +7,8 @@ import QuestionStem from "@/components/quiz/QuestionStem";
 import ChoiceList from "@/components/quiz/ChoiceList";
 import QuestionNavigator from "@/components/quiz/QuestionNavigator";
 import QuizTimer from "@/components/quiz/QuizTimer";
+import NoteEditor from "@/components/notes/NoteEditor";
+import ReportIssueButton from "@/components/reports/ReportIssueButton";
 import {
   pauseQuiz,
   resumeQuiz,
@@ -273,6 +275,11 @@ export default function QuizRunner({
               {current.question.source && (
                 <p className="mt-4 text-xs text-slate-400">Source: {current.question.source}</p>
               )}
+
+              <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-slate-100 pt-4">
+                <NoteEditor questionId={current.question.id} initialNote={current.note} />
+                <ReportIssueButton questionId={current.question.id} />
+              </div>
             </div>
 
             <div className="mt-6 flex items-center justify-between">

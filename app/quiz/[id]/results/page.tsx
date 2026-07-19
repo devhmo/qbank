@@ -63,6 +63,14 @@ export default async function QuizResultsPage({
     .in("question_id", questionIds)
     .order("order_index");
 
+  const { data: notes } = await supabase
+    .from("user_notes")
+    .select("question_id, note_text")
+    .eq("user_id", user.id)
+    .in("question_id", questionIds);
+
+  const notesByQuestion = new Map((notes ?? []).map((n) => [n.question_id as string, n.note_text as string]));
+
   const questionsById = new Map((questions ?? []).map((q) => [q.id, q]));
   const choicesByQuestion = new Map<string, QuizChoice[]>();
   for (const c of (choices ?? []) as (QuizChoice & { question_id: string })[]) {
@@ -141,11 +149,13 @@ export default async function QuizResultsPage({
             <ResultsQuestionReview
               key={qq.id}
               index={index}
+              questionId={qq.question_id as string}
               stem={question?.stem ?? ""}
               imageUrl={question?.image_url ?? null}
               choices={choicesByQuestion.get(qq.question_id as string) ?? []}
               selectedChoiceId={qq.selected_choice_id as string | null}
               isCorrect={qq.is_correct as boolean | null}
+              initialNote={notesByQuestion.get(qq.question_id as string) ?? ""}
             />
           );
         })}
