@@ -45,6 +45,12 @@ export default function Navbar({
           </a>
 
           {isLoggedIn && (
+            <a href="/search" className="transition hover:text-primary-700">
+              Search
+            </a>
+          )}
+
+          {isLoggedIn && (
             <a href="/dashboard" className="transition hover:text-primary-700">
               Dashboard
             </a>
