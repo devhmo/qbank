@@ -99,36 +99,36 @@ export default async function QuizResultsPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
-      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
+      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
         Results
       </p>
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
         Quiz complete
       </h1>
 
-      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6 text-center">
-        <p className="text-4xl font-semibold text-slate-900">{percent}%</p>
-        <p className="mt-1 text-sm text-slate-500">
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6 text-center dark:border-slate-700 dark:bg-slate-800">
+        <p className="text-4xl font-semibold text-slate-900 dark:text-slate-100">{percent}%</p>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           {score.correct} of {score.total} correct
           {score.unanswered > 0 && ` — ${score.unanswered} not answered`}
         </p>
       </div>
 
       {breakdown.length > 0 && (
-        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-          <p className="mb-4 text-sm font-medium text-slate-700">Breakdown by subject</p>
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+          <p className="mb-4 text-sm font-medium text-slate-700 dark:text-slate-300">Breakdown by subject</p>
           <div className="space-y-3">
             {breakdown.map((b) => {
               const subjectPercent = b.total > 0 ? Math.round((b.correct / b.total) * 100) : 0;
               return (
                 <div key={b.subjectName}>
                   <div className="mb-1 flex items-center justify-between text-sm">
-                    <span className="text-slate-700">{b.subjectName}</span>
-                    <span className="text-slate-500">
+                    <span className="text-slate-700 dark:text-slate-300">{b.subjectName}</span>
+                    <span className="text-slate-500 dark:text-slate-400">
                       {b.correct}/{b.total} ({subjectPercent}%)
                     </span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+                  <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
                     <div
                       className="h-full rounded-full bg-primary-600"
                       style={{ width: `${subjectPercent}%` }}
@@ -142,7 +142,7 @@ export default async function QuizResultsPage({
       )}
 
       <div className="mt-8 space-y-4">
-        <p className="text-sm font-medium text-slate-700">Review</p>
+        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Review</p>
         {quizQuestions.map((qq, index) => {
           const question = questionsById.get(qq.question_id as string);
           return (

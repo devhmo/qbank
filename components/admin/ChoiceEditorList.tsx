@@ -70,11 +70,11 @@ export default function ChoiceEditorList({
   return (
     <div>
       <div className="flex items-center justify-between">
-        <p className="block text-sm font-medium text-slate-700">Choices</p>
+        <p className="block text-sm font-medium text-slate-700 dark:text-slate-300">Choices</p>
         <button
           type="button"
           onClick={addChoice}
-          className="text-sm font-medium text-primary-700 hover:text-primary-800"
+          className="text-sm font-medium text-primary-700 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
         >
           + Add choice
         </button>
@@ -84,7 +84,7 @@ export default function ChoiceEditorList({
         {rows.map((choice, index) => (
           <div
             key={choice.uiKey}
-            className="rounded-lg border border-slate-200 p-3"
+            className="rounded-lg border border-slate-200 p-3 dark:border-slate-700"
           >
             <div className="flex items-start gap-3">
               <input
@@ -94,7 +94,7 @@ export default function ChoiceEditorList({
                   updateChoice(choice.uiKey, { is_correct: e.target.checked })
                 }
                 title="Mark as correct"
-                className="mt-2 h-4 w-4 flex-shrink-0 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                className="mt-2 h-4 w-4 flex-shrink-0 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
               />
               <div className="flex-1 space-y-2">
                 <input
@@ -127,7 +127,7 @@ export default function ChoiceEditorList({
                     ? "At least two choices are required"
                     : "Remove this choice"
                 }
-                className="mt-1 flex-shrink-0 text-sm font-medium text-red-600 hover:text-red-700 disabled:cursor-not-allowed disabled:text-slate-300"
+                className="mt-1 flex-shrink-0 text-sm font-medium text-red-600 hover:text-red-700 disabled:cursor-not-allowed disabled:text-slate-300 dark:text-red-400 dark:hover:text-red-400"
               >
                 Remove
               </button>
@@ -135,7 +135,7 @@ export default function ChoiceEditorList({
           </div>
         ))}
       </div>
-      <p className="mt-2 text-xs text-slate-500">
+      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
         Check the box next to a choice to mark it correct. At least one is
         required.
       </p>

@@ -81,14 +81,14 @@ export default function ChoiceList({
                 type="button"
                 onClick={() => onToggleEliminate(choice.id)}
                 title={isEliminated ? "Restore this choice" : "Strike out this choice"}
-                className="flex-shrink-0 rounded px-2 py-1 text-xs font-medium text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                className="flex-shrink-0 rounded px-2 py-1 text-xs font-medium text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-400"
               >
                 {isEliminated ? "Undo" : "Strike"}
               </button>
             </div>
 
             {showFeedback && choice.explanation && (
-              <p className="mt-1 px-3 text-sm text-slate-600">{choice.explanation}</p>
+              <p className="mt-1 px-3 text-sm text-slate-600 dark:text-slate-400">{choice.explanation}</p>
             )}
           </div>
         );

@@ -51,28 +51,28 @@ export default function ImportPreviewCard({
           }`}
         />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-slate-900">
+          <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
             {index + 1}. {question.stem || "(empty stem)"}
           </p>
-          <p className="mt-0.5 truncate text-xs text-slate-500">
+          <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">
             {question.subjectName || "Subject?"} ›{" "}
             {question.systemName || "System?"} › {question.topicName || "Topic?"}
             {!isValid && (
-              <span className="ml-2 font-medium text-amber-600">
+              <span className="ml-2 font-medium text-amber-600 dark:text-amber-400">
                 {validationError}
               </span>
             )}
           </p>
         </div>
-        <span className="flex-shrink-0 text-xs font-medium text-slate-400">
+        <span className="flex-shrink-0 text-xs font-medium text-slate-400 dark:text-slate-500">
           {expanded ? "Collapse" : "Edit"}
         </span>
       </button>
 
       {expanded && (
-        <div className="space-y-4 border-t border-slate-200 px-4 py-4">
+        <div className="space-y-4 border-t border-slate-200 px-4 py-4 dark:border-slate-700">
           <div>
-            <label className="block text-xs font-medium text-slate-700">
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
               Stem
             </label>
             <textarea
@@ -84,7 +84,7 @@ export default function ImportPreviewCard({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-700">
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
               Location
             </label>
             <div className="mt-1">
@@ -104,7 +104,7 @@ export default function ImportPreviewCard({
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-xs font-medium text-slate-700">
+              <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
                 Difficulty
               </label>
               <select
@@ -122,14 +122,14 @@ export default function ImportPreviewCard({
               </select>
             </div>
             <div className="flex items-end pb-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                 <input
                   type="checkbox"
                   checked={question.high_yield}
                   onChange={(e) =>
                     onUpdate(question.key, { high_yield: e.target.checked })
                   }
-                  className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                  className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
                 />
                 High yield
               </label>
@@ -143,9 +143,9 @@ export default function ImportPreviewCard({
           />
 
           <div>
-            <label className="block text-xs font-medium text-slate-700">
+            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
               Source{" "}
-              <span className="font-normal text-slate-400">(optional)</span>
+              <span className="font-normal text-slate-400 dark:text-slate-500">(optional)</span>
             </label>
             <input
               type="text"
@@ -157,11 +157,11 @@ export default function ImportPreviewCard({
             />
           </div>
 
-          <div className="flex justify-end border-t border-slate-100 pt-3">
+          <div className="flex justify-end border-t border-slate-100 pt-3 dark:border-slate-800">
             <button
               type="button"
               onClick={() => onRemove(question.key)}
-              className="text-sm font-medium text-red-600 hover:text-red-700"
+              className="text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-400"
             >
               Remove from import
             </button>

@@ -68,7 +68,7 @@ export default function QuizTimer({
         type="button"
         onClick={isPaused ? onResume : onPause}
         disabled={pausing}
-        className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
       >
         {pausing ? "..." : isPaused ? "Resume" : "Pause"}
       </button>

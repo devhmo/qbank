@@ -63,13 +63,13 @@ export default function ImageUploadField({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700">
-        Image <span className="font-normal text-slate-400">(optional)</span>
+      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+        Image <span className="font-normal text-slate-400 dark:text-slate-500">(optional)</span>
       </label>
 
       {value ? (
         <div className="mt-2 flex items-start gap-4">
-          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-slate-200">
+          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
             <Image
               src={value}
               alt="Question illustration"
@@ -81,7 +81,7 @@ export default function ImageUploadField({
           <button
             type="button"
             onClick={handleRemove}
-            className="text-sm font-medium text-red-600 hover:text-red-700"
+            className="text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-400"
           >
             Remove image
           </button>
@@ -93,14 +93,14 @@ export default function ImageUploadField({
           accept="image/*"
           onChange={handleFileChange}
           disabled={uploading}
-          className="mt-2 block w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100"
+          className="mt-2 block w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100 dark:text-slate-400 dark:file:bg-primary-900/40 dark:file:text-primary-400"
         />
       )}
 
       {uploading && (
-        <p className="mt-1 text-sm text-slate-500">Uploading...</p>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Uploading...</p>
       )}
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }

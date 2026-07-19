@@ -115,7 +115,7 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
 
   return (
     <div>
-      <div className="flex gap-6 border-b border-slate-200">
+      <div className="flex gap-6 border-b border-slate-200 dark:border-slate-700">
         {(
           [
             { id: "text", label: "Structured Text" },
@@ -142,8 +142,8 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
 
       {method === "text" ? (
         <div className="mt-6 space-y-4">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-            <p className="font-medium text-slate-800">Format</p>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+            <p className="font-medium text-slate-800 dark:text-slate-200">Format</p>
             <p className="mt-1">
               Each question starts with <code>Q:</code> followed by the stem
               (multiple paragraphs are fine), then <code>SUBJECT:</code>,{" "}
@@ -161,24 +161,24 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
               defaults to false), <code>SOURCE:</code>.
             </p>
             <details className="mt-3">
-              <summary className="cursor-pointer font-medium text-primary-700">
+              <summary className="cursor-pointer font-medium text-primary-700 dark:text-primary-400">
                 Show example
               </summary>
-              <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg bg-white p-3 text-xs text-slate-700">
+              <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg bg-white p-3 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                 {EXAMPLE_TEXT}
               </pre>
             </details>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Paste your text, or upload a .txt / .md file
             </label>
             <textarea
               rows={12}
               value={text}
               onChange={(e) => setText(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100"
               placeholder={EXAMPLE_TEXT}
             />
             <input
@@ -190,7 +190,7 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
           </div>
 
           {parseError && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
               {parseError}
             </p>
           )}
@@ -205,8 +205,8 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
         </div>
       ) : (
         <div className="mt-6 space-y-4">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-            <p className="font-medium text-slate-800">Format</p>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+            <p className="font-medium text-slate-800 dark:text-slate-200">Format</p>
             <p className="mt-1">
               Download the template, fill in one row per question (up to 5
               choices), and set <code>Correct Answer</code> to the number of
@@ -220,13 +220,13 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
           <button
             type="button"
             onClick={() => downloadImportTemplate()}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
           >
             Download .xlsx Template
           </button>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Upload your filled-in template
             </label>
             <input
@@ -239,10 +239,10 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
           </div>
 
           {parsing && (
-            <p className="text-sm text-slate-500">Reading file...</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Reading file...</p>
           )}
           {parseError && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
               {parseError}
             </p>
           )}

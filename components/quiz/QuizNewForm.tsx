@@ -111,9 +111,9 @@ export default function QuizNewForm({
   return (
     <div className="space-y-8">
       <div>
-        <p className="block text-sm font-medium text-slate-700">
+        <p className="block text-sm font-medium text-slate-700 dark:text-slate-300">
           Subjects, systems &amp; topics{" "}
-          <span className="font-normal text-slate-400">(leave empty for all)</span>
+          <span className="font-normal text-slate-400 dark:text-slate-500">(leave empty for all)</span>
         </p>
         <div className="mt-1">
           <CatalogTreeSelect
@@ -125,17 +125,17 @@ export default function QuizNewForm({
       </div>
 
       <div>
-        <p className="block text-sm font-medium text-slate-700">
-          Difficulty <span className="font-normal text-slate-400">(leave empty for all)</span>
+        <p className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          Difficulty <span className="font-normal text-slate-400 dark:text-slate-500">(leave empty for all)</span>
         </p>
         <div className="mt-2 flex gap-4">
           {DIFFICULTY_OPTIONS.map((opt) => (
-            <label key={opt.value} className="flex items-center gap-2 text-sm text-slate-700">
+            <label key={opt.value} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
               <input
                 type="checkbox"
                 checked={difficulties.has(opt.value)}
                 onChange={() => toggleDifficulty(opt.value)}
-                className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
               />
               {opt.label}
             </label>
@@ -144,7 +144,7 @@ export default function QuizNewForm({
       </div>
 
       <div>
-        <p className="block text-sm font-medium text-slate-700">Scope</p>
+        <p className="block text-sm font-medium text-slate-700 dark:text-slate-300">Scope</p>
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {SCOPE_OPTIONS.map((opt) => (
             <label
@@ -169,7 +169,7 @@ export default function QuizNewForm({
         </div>
       </div>
 
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
         {countLoading
           ? "Checking how many questions match..."
           : availableCount === null
@@ -179,7 +179,7 @@ export default function QuizNewForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="numQuestions" className="block text-sm font-medium text-slate-700">
+          <label htmlFor="numQuestions" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Number of questions
           </label>
           <input
@@ -195,7 +195,7 @@ export default function QuizNewForm({
       </div>
 
       <div>
-        <p className="block text-sm font-medium text-slate-700">Mode</p>
+        <p className="block text-sm font-medium text-slate-700 dark:text-slate-300">Mode</p>
         <div className="mt-2 grid grid-cols-2 gap-3">
           <label
             className={`cursor-pointer rounded-lg border p-3 text-sm transition ${
@@ -211,8 +211,8 @@ export default function QuizNewForm({
               checked={mode === "tutor"}
               onChange={() => setMode("tutor")}
             />
-            <p className="font-medium text-slate-900">Tutor</p>
-            <p className="mt-0.5 text-xs text-slate-500">
+            <p className="font-medium text-slate-900 dark:text-slate-100">Tutor</p>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
               See correct/incorrect and explanations right after each question.
             </p>
           </label>
@@ -230,8 +230,8 @@ export default function QuizNewForm({
               checked={mode === "timed"}
               onChange={() => setMode("timed")}
             />
-            <p className="font-medium text-slate-900">Timed / Exam</p>
-            <p className="mt-0.5 text-xs text-slate-500">
+            <p className="font-medium text-slate-900 dark:text-slate-100">Timed / Exam</p>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
               Explanations are held back until you finish the quiz.
             </p>
           </label>
@@ -239,7 +239,7 @@ export default function QuizNewForm({
 
         {mode === "timed" && (
           <div className="mt-3">
-            <label htmlFor="timeLimit" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="timeLimit" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Time limit (minutes)
             </label>
             <input
@@ -255,7 +255,7 @@ export default function QuizNewForm({
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">{error}</p>
       )}
 
       <button

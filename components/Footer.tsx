@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer id="about" className="border-t border-slate-200 bg-slate-50">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-500">
+    <footer id="about" className="border-t border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-500 dark:text-slate-400">
         <p>
           QBank is currently in early development. This page will grow into a
           full study platform in upcoming stages.

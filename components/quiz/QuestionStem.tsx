@@ -76,7 +76,7 @@ export default function QuestionStem({
     <div>
       <div
         ref={containerRef}
-        className="select-text whitespace-pre-wrap text-base leading-relaxed text-slate-800"
+        className="select-text whitespace-pre-wrap text-base leading-relaxed text-slate-800 dark:text-slate-200"
       >
         {segments.map((seg, i) =>
           seg.highlighted ? (
@@ -96,7 +96,7 @@ export default function QuestionStem({
           )
         )}
       </div>
-      <p className="mt-2 text-xs text-slate-400">
+      <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
         Select text to highlight it. Tap a highlight to remove it.
       </p>
     </div>

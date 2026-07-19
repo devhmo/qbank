@@ -174,14 +174,14 @@ export default function QuizRunner({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="min-w-0">
-            <p className="text-sm font-medium text-slate-900">
+            <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
               Question {currentIndex + 1} of {items.length}
             </p>
-            <div className="mt-1 h-1.5 w-40 overflow-hidden rounded-full bg-slate-200 sm:w-56">
+            <div className="mt-1 h-1.5 w-40 overflow-hidden rounded-full bg-slate-200 sm:w-56 dark:bg-slate-700">
               <div
                 className="h-full rounded-full bg-primary-600 transition-all"
                 style={{ width: `${((currentIndex + 1) / items.length) * 100}%` }}
@@ -204,21 +204,21 @@ export default function QuizRunner({
 
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         {error && (
-          <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+          <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">{error}</p>
         )}
 
         {isPaused ? (
-          <div className="rounded-xl border border-slate-200 bg-white p-16 text-center">
-            <p className="text-lg font-semibold text-slate-900">Quiz paused</p>
-            <p className="mt-1 text-sm text-slate-500">
+          <div className="rounded-xl border border-slate-200 bg-white p-16 text-center dark:border-slate-700 dark:bg-slate-800">
+            <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">Quiz paused</p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Your timer is frozen. Click Resume when you&rsquo;re ready to continue.
             </p>
           </div>
         ) : (
           <>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
+            <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600">
+                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600 dark:bg-slate-700 dark:text-slate-400">
                   {current.question.difficulty}
                 </span>
                 <div className="flex flex-wrap items-center gap-4">
@@ -244,7 +244,7 @@ export default function QuizRunner({
               </div>
 
               {current.question.image_url && (
-                <div className="relative mb-4 h-64 w-full overflow-hidden rounded-lg border border-slate-200">
+                <div className="relative mb-4 h-64 w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
                   <Image
                     src={current.question.image_url}
                     alt="Question illustration"
@@ -273,10 +273,10 @@ export default function QuizRunner({
               </div>
 
               {current.question.source && (
-                <p className="mt-4 text-xs text-slate-400">Source: {current.question.source}</p>
+                <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">Source: {current.question.source}</p>
               )}
 
-              <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-slate-100 pt-4">
+              <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-slate-100 pt-4 dark:border-slate-800">
                 <NoteEditor questionId={current.question.id} initialNote={current.note} />
                 <ReportIssueButton questionId={current.question.id} />
               </div>
@@ -287,7 +287,7 @@ export default function QuizRunner({
                 type="button"
                 onClick={() => goToIndex(currentIndex - 1)}
                 disabled={currentIndex === 0}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
               >
                 Previous
               </button>
@@ -296,7 +296,7 @@ export default function QuizRunner({
                 type="button"
                 onClick={() => handleSubmit(false)}
                 disabled={submitting}
-                className="rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 sm:px-4"
+                className="rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 sm:px-4 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/30"
               >
                 {submitting ? "Submitting..." : "End Quiz"}
               </button>
@@ -311,8 +311,8 @@ export default function QuizRunner({
               </button>
             </div>
 
-            <div className="mt-8 rounded-xl border border-slate-200 bg-white p-4">
-              <p className="mb-3 text-sm font-medium text-slate-700">
+            <div className="mt-8 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+              <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
                 Navigator ({answeredCount} of {items.length} answered)
               </p>
               <QuestionNavigator items={items} currentIndex={currentIndex} onJump={goToIndex} />

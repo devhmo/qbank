@@ -24,9 +24,9 @@ export default function ResultsQuestionReview({
   initialNote: string;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-sm font-medium text-slate-500">Question {index + 1}</p>
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Question {index + 1}</p>
         <span
           className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
             isCorrect === null
@@ -41,12 +41,12 @@ export default function ResultsQuestionReview({
       </div>
 
       {imageUrl && (
-        <div className="relative mb-4 h-48 w-full overflow-hidden rounded-lg border border-slate-200">
+        <div className="relative mb-4 h-48 w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
           <Image src={imageUrl} alt="Question illustration" fill className="object-contain" />
         </div>
       )}
 
-      <p className="whitespace-pre-wrap text-base leading-relaxed text-slate-800">{stem}</p>
+      <p className="whitespace-pre-wrap text-base leading-relaxed text-slate-800 dark:text-slate-200">{stem}</p>
 
       <div className="mt-4 space-y-2">
         {choices.map((choice, i) => {
@@ -73,20 +73,20 @@ export default function ResultsQuestionReview({
                 >
                   {LETTERS[i] ?? i + 1}
                 </span>
-                <span className="text-sm text-slate-800">
+                <span className="text-sm text-slate-800 dark:text-slate-200">
                   {choice.text}
-                  {isSelected && <span className="ml-2 text-xs text-slate-500">(your answer)</span>}
+                  {isSelected && <span className="ml-2 text-xs text-slate-500 dark:text-slate-400">(your answer)</span>}
                 </span>
               </div>
               {choice.explanation && (
-                <p className="mt-1 px-3 text-sm text-slate-600">{choice.explanation}</p>
+                <p className="mt-1 px-3 text-sm text-slate-600 dark:text-slate-400">{choice.explanation}</p>
               )}
             </div>
           );
         })}
       </div>
 
-      <div className="mt-4 border-t border-slate-100 pt-4">
+      <div className="mt-4 border-t border-slate-100 pt-4 dark:border-slate-800">
         <NoteEditor questionId={questionId} initialNote={initialNote} />
       </div>
     </div>

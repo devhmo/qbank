@@ -110,7 +110,7 @@ export default function QuestionForm({
   return (
     <div className="space-y-8">
       <div>
-        <label htmlFor="stem" className="block text-sm font-medium text-slate-700">
+        <label htmlFor="stem" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
           Question stem
         </label>
         <textarea
@@ -126,7 +126,7 @@ export default function QuestionForm({
       <ImageUploadField value={imageUrl} onChange={setImageUrl} />
 
       <div>
-        <p className="block text-sm font-medium text-slate-700">Location</p>
+        <p className="block text-sm font-medium text-slate-700 dark:text-slate-300">Location</p>
         <div className="mt-1">
           <CatalogCascadeSelect
             catalog={catalog}
@@ -141,9 +141,9 @@ export default function QuestionForm({
           />
         </div>
         {missingCatalogEntries && (
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
             Need a new subject, system, or topic? Manage them on the{" "}
-            <a href="/admin/catalog" className="font-medium text-primary-700 hover:text-primary-800">
+            <a href="/admin/catalog" className="font-medium text-primary-700 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">
               Catalog page
             </a>
             .
@@ -153,7 +153,7 @@ export default function QuestionForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="difficulty" className="block text-sm font-medium text-slate-700">
+          <label htmlFor="difficulty" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Difficulty
           </label>
           <select
@@ -169,12 +169,12 @@ export default function QuestionForm({
         </div>
 
         <div className="flex items-end pb-2">
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
             <input
               type="checkbox"
               checked={highYield}
               onChange={(e) => setHighYield(e.target.checked)}
-              className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+              className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
             />
             High yield
           </label>
@@ -187,9 +187,9 @@ export default function QuestionForm({
       />
 
       <div>
-        <label htmlFor="source" className="block text-sm font-medium text-slate-700">
+        <label htmlFor="source" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
           Source / reference{" "}
-          <span className="font-normal text-slate-400">(optional)</span>
+          <span className="font-normal text-slate-400 dark:text-slate-500">(optional)</span>
         </label>
         <input
           id="source"
@@ -202,17 +202,17 @@ export default function QuestionForm({
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
           {error}
         </p>
       )}
 
-      <div className="flex items-center gap-3 border-t border-slate-200 pt-6">
+      <div className="flex items-center gap-3 border-t border-slate-200 pt-6 dark:border-slate-700">
         <button
           type="button"
           onClick={() => handleSave("draft")}
           disabled={saving !== null}
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
         >
           {saving === "draft" ? "Saving..." : "Save as Draft"}
         </button>

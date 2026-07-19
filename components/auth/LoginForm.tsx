@@ -43,7 +43,7 @@ export default function LoginForm() {
   return (
     <div>
       {notice === "check-email" && (
-        <p className="mb-4 rounded-lg bg-primary-50 px-3 py-2 text-sm text-primary-700">
+        <p className="mb-4 rounded-lg bg-primary-50 px-3 py-2 text-sm text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
           Account created. Check your email to confirm it, then sign in
           below.
         </p>
@@ -53,7 +53,7 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-slate-700"
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             Email
           </label>
@@ -72,7 +72,7 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-slate-700"
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             Password
           </label>
@@ -89,7 +89,7 @@ export default function LoginForm() {
         </div>
 
         {error && (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
             {error}
           </p>
         )}
@@ -103,11 +103,11 @@ export default function LoginForm() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
         Don&rsquo;t have an account?{" "}
         <a
           href="/signup"
-          className="font-medium text-primary-700 hover:text-primary-800"
+          className="font-medium text-primary-700 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
         >
           Sign up
         </a>

@@ -32,8 +32,24 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Runs before paint so there's no flash of the wrong theme.
+            Inline (not a bundled script) specifically so it executes
+            synchronously ahead of hydration. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var stored = localStorage.getItem('qbank-theme');
+                var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                if (theme === 'dark') document.documentElement.classList.add('dark');
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
+      <body className="bg-slate-50 dark:bg-slate-950">
         <Navbar
           email={user?.email ?? null}
           fullName={profile?.full_name ?? null}

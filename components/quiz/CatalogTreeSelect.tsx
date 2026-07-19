@@ -28,7 +28,7 @@ function TriStateCheckbox({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+        className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
       />
       <span className={`text-sm ${bold ? "font-medium text-slate-900" : "text-slate-700"}`}>
         {label}
@@ -60,14 +60,14 @@ export default function CatalogTreeSelect({
 
   if (catalog.subjects.length === 0) {
     return (
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
         No subjects yet — ask an admin to set up the catalog first.
       </p>
     );
   }
 
   return (
-    <div className="max-h-72 space-y-1 overflow-y-auto rounded-lg border border-slate-200 p-3">
+    <div className="max-h-72 space-y-1 overflow-y-auto rounded-lg border border-slate-200 p-3 dark:border-slate-700">
       {catalog.subjects.map((subject) => {
         const systems = catalog.systems.filter((s) => s.subject_id === subject.id);
         const subjectTopicIds = topicIdsUnder(systems.map((s) => s.id));
@@ -76,7 +76,7 @@ export default function CatalogTreeSelect({
         ).length;
 
         return (
-          <details key={subject.id} open className="border-b border-slate-100 pb-1 last:border-0">
+          <details key={subject.id} open className="border-b border-slate-100 pb-1 last:border-0 dark:border-slate-800">
             <summary className="flex cursor-pointer list-none items-center gap-2 marker:content-none">
               <TriStateCheckbox
                 checked={subjectTopicIds.length > 0 && subjectSelectedCount === subjectTopicIds.length}
@@ -113,9 +113,9 @@ export default function CatalogTreeSelect({
                             type="checkbox"
                             checked={selectedTopicIds.has(topic.id)}
                             onChange={(e) => setMany([topic.id], e.target.checked)}
-                            className="h-3.5 w-3.5 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                            className="h-3.5 w-3.5 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
                           />
-                          <span className="text-sm text-slate-600">{topic.name}</span>
+                          <span className="text-sm text-slate-600 dark:text-slate-400">{topic.name}</span>
                         </label>
                       ))}
                     </div>

@@ -24,13 +24,13 @@ export default async function AdminPage() {
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
-      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
+      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
         Admin
       </p>
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
         Admin Panel
       </h1>
-      <p className="mt-2 max-w-xl text-slate-600">
+      <p className="mt-2 max-w-xl text-slate-600 dark:text-slate-400">
         Manage questions and the subject/system/topic catalog.
       </p>
 
@@ -38,12 +38,12 @@ export default async function AdminPage() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-xl border border-slate-200 bg-white p-5"
+            className="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800"
           >
-            <p className="text-2xl font-semibold text-slate-900">
+            <p className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
               {stat.value}
             </p>
-            <p className="mt-1 text-sm text-slate-500">{stat.label}</p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -57,13 +57,13 @@ export default async function AdminPage() {
         </a>
         <a
           href="/admin/questions"
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
         >
           View all questions
         </a>
         <a
           href="/admin/import"
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
         >
           Bulk import
         </a>

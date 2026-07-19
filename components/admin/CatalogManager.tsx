@@ -91,18 +91,18 @@ function CatalogColumn({
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white">
-      <div className="border-b border-slate-200 px-4 py-3">
-        <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
+    <div className="rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+      <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{title}</h2>
       </div>
 
       {disabled ? (
-        <p className="px-4 py-6 text-sm text-slate-400">{disabledMessage}</p>
+        <p className="px-4 py-6 text-sm text-slate-400 dark:text-slate-500">{disabledMessage}</p>
       ) : (
         <>
           <ul className="max-h-80 divide-y divide-slate-100 overflow-y-auto">
             {items.length === 0 && (
-              <li className="px-4 py-4 text-sm text-slate-400">None yet.</li>
+              <li className="px-4 py-4 text-sm text-slate-400 dark:text-slate-500">None yet.</li>
             )}
             {items.map((item) => (
               <li
@@ -117,20 +117,20 @@ function CatalogColumn({
                       autoFocus
                       value={editingName}
                       onChange={(e) => setEditingName(e.target.value)}
-                      className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                      className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600"
                     />
                     <button
                       type="button"
                       disabled={busy}
                       onClick={() => handleRenameSave(item.id)}
-                      className="text-xs font-medium text-primary-700 hover:text-primary-800"
+                      className="text-xs font-medium text-primary-700 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
                     >
                       Save
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditingId(null)}
-                      className="text-xs font-medium text-slate-500 hover:text-slate-700"
+                      className="text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
                     >
                       Cancel
                     </button>
@@ -154,7 +154,7 @@ function CatalogColumn({
                         setEditingId(item.id);
                         setEditingName(item.name);
                       }}
-                      className="text-xs font-medium text-slate-500 hover:text-slate-700"
+                      className="text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
                     >
                       Rename
                     </button>
@@ -162,7 +162,7 @@ function CatalogColumn({
                       type="button"
                       disabled={busy}
                       onClick={() => handleDelete(item.id)}
-                      className="text-xs font-medium text-red-600 hover:text-red-700"
+                      className="text-xs font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-400"
                     >
                       Delete
                     </button>
@@ -174,13 +174,13 @@ function CatalogColumn({
 
           <form
             onSubmit={handleAdd}
-            className="flex items-center gap-2 border-t border-slate-200 p-3"
+            className="flex items-center gap-2 border-t border-slate-200 p-3 dark:border-slate-700"
           >
             <input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder={`New ${title.toLowerCase().replace(/s$/, "")}...`}
-              className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600"
             />
             <button
               type="submit"
@@ -194,7 +194,7 @@ function CatalogColumn({
       )}
 
       {error && (
-        <p className="border-t border-slate-200 px-4 py-2 text-xs text-red-600">
+        <p className="border-t border-slate-200 px-4 py-2 text-xs text-red-600 dark:border-slate-700 dark:text-red-400">
           {error}
         </p>
       )}

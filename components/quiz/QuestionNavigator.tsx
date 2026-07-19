@@ -40,12 +40,12 @@ export default function QuestionNavigator({
           );
         })}
       </div>
-      <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-500">
+      <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-500 dark:text-slate-400">
         <span className="flex items-center gap-1.5">
           <span className="h-3 w-3 rounded border border-primary-600 bg-primary-600" /> Answered
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded border border-slate-300 bg-white" /> Unanswered
+          <span className="h-3 w-3 rounded border border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-800" /> Unanswered
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-amber-500" /> Marked for review

@@ -24,7 +24,7 @@ export default function ReportIssueButton({ questionId }: { questionId: string }
   }
 
   if (status === "sent") {
-    return <p className="text-sm text-primary-700">✓ Report submitted — thank you.</p>;
+    return <p className="text-sm text-primary-700 dark:text-primary-400">✓ Report submitted — thank you.</p>;
   }
 
   return (
@@ -32,7 +32,7 @@ export default function ReportIssueButton({ questionId }: { questionId: string }
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="text-sm font-medium text-slate-400 transition hover:text-slate-600"
+        className="text-sm font-medium text-slate-400 transition hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-400"
       >
         {open ? "Cancel report" : "🚩 Report an error"}
       </button>
@@ -44,9 +44,9 @@ export default function ReportIssueButton({ questionId }: { questionId: string }
             onChange={(e) => setMessage(e.target.value)}
             rows={3}
             placeholder="What's wrong with this question?"
-            className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
-          {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+          {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
           <button
             type="button"
             onClick={handleSubmit}

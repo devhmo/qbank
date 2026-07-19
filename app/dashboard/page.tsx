@@ -83,16 +83,16 @@ export default async function DashboardPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
-      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
+      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
         Dashboard
       </p>
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
         Your progress
       </h1>
 
       {stats.totalAnswered === 0 ? (
-        <div className="mt-8 rounded-xl border border-slate-200 bg-white p-10 text-center">
-          <p className="text-slate-600">You haven&rsquo;t answered any questions yet.</p>
+        <div className="mt-8 rounded-xl border border-slate-200 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-800">
+          <p className="text-slate-600 dark:text-slate-400">You haven&rsquo;t answered any questions yet.</p>
           <a
             href="/quiz/new"
             className="mt-4 inline-block rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-700"
@@ -109,21 +109,21 @@ export default async function DashboardPage() {
           </div>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-xl border border-slate-200 bg-white p-6">
-              <p className="mb-4 text-sm font-medium text-slate-700">
+            <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+              <p className="mb-4 text-sm font-medium text-slate-700 dark:text-slate-300">
                 Performance by subject
               </p>
               <SubjectPerformanceChart data={subjectBreakdown} />
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-6">
-              <p className="mb-4 text-sm font-medium text-slate-700">
+            <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+              <p className="mb-4 text-sm font-medium text-slate-700 dark:text-slate-300">
                 Accuracy trend (last 30 days)
               </p>
               {trend.length > 0 ? (
                 <AccuracyTrendChart data={trend} />
               ) : (
-                <p className="flex h-[280px] items-center justify-center text-center text-sm text-slate-500">
+                <p className="flex h-[280px] items-center justify-center text-center text-sm text-slate-500 dark:text-slate-400">
                   No activity in the last 30 days.
                 </p>
               )}
@@ -131,13 +131,13 @@ export default async function DashboardPage() {
           </div>
 
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-xl border border-slate-200 bg-white p-6">
-              <p className="mb-4 text-sm font-medium text-slate-700">Weakest topics</p>
+            <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+              <p className="mb-4 text-sm font-medium text-slate-700 dark:text-slate-300">Weakest topics</p>
               <WeakestTopicsList topics={weakestTopics} />
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-6">
-              <p className="mb-4 text-sm font-medium text-slate-700">Quick links</p>
+            <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+              <p className="mb-4 text-sm font-medium text-slate-700 dark:text-slate-300">Quick links</p>
               <div className="space-y-3">
                 <QuickStartQuizLink scope="bookmarked" label="Bookmarked questions" />
                 <QuickStartQuizLink scope="incorrect" label="Previously incorrect" />

@@ -20,10 +20,10 @@ export default async function QuestionsListPage() {
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
+          <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
             Admin
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
             Questions
           </h1>
         </div>
@@ -36,17 +36,17 @@ export default async function QuestionsListPage() {
       </div>
 
       {error && (
-        <p className="mt-6 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-6 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
           Couldn&rsquo;t load questions: {error.message}
         </p>
       )}
 
       {!error && (!questions || questions.length === 0) && (
-        <p className="mt-8 text-sm text-slate-500">
+        <p className="mt-8 text-sm text-slate-500 dark:text-slate-400">
           No questions yet.{" "}
           <a
             href="/admin/questions/new"
-            className="font-medium text-primary-700 hover:text-primary-800"
+            className="font-medium text-primary-700 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
           >
             Add your first one
           </a>

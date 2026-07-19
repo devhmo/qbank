@@ -62,13 +62,13 @@ export default function NoteEditor({
             onChange={(e) => handleChange(e.target.value)}
             rows={3}
             placeholder="Write a personal note about this question..."
-            className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
             {status === "saving" && "Saving..."}
             {status === "saved" && "Saved"}
             {status === "error" && (
-              <span className="text-red-500">Couldn&rsquo;t save — check your connection.</span>
+              <span className="text-red-500 dark:text-red-400">Couldn&rsquo;t save — check your connection.</span>
             )}
           </p>
         </div>

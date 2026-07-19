@@ -55,7 +55,7 @@ function SelectAllCheckbox({
       type="checkbox"
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
-      className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+      className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
       aria-label="Select all questions"
     />
   );
@@ -169,14 +169,14 @@ export default function QuestionsTable({
     <div>
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <label htmlFor="status-filter" className="text-sm font-medium text-slate-700">
+          <label htmlFor="status-filter" className="text-sm font-medium text-slate-700 dark:text-slate-300">
             Status
           </label>
           <select
             id="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100"
           >
             <option value="all">All</option>
             <option value="draft">Draft</option>
@@ -185,8 +185,8 @@ export default function QuestionsTable({
         </div>
 
         {selectedIds.size > 0 && (
-          <div className="flex items-center gap-3 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2">
-            <span className="text-sm font-medium text-primary-800">
+          <div className="flex items-center gap-3 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2 dark:bg-primary-900/40">
+            <span className="text-sm font-medium text-primary-800 dark:text-primary-300">
               {selectedIds.size} selected
             </span>
             <button
@@ -201,7 +201,7 @@ export default function QuestionsTable({
               type="button"
               onClick={handleBulkDelete}
               disabled={bulkAction !== null}
-              className="rounded-lg border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-lg border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-700 dark:bg-slate-800 dark:text-red-400 dark:hover:bg-red-900/30"
             >
               {bulkAction === "delete" ? "Deleting..." : "Delete Selected"}
             </button>
@@ -210,19 +210,19 @@ export default function QuestionsTable({
       </div>
 
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
           {error}
         </p>
       )}
 
       {filteredQuestions.length === 0 ? (
-        <p className="mt-8 text-sm text-slate-500">
+        <p className="mt-8 text-sm text-slate-500 dark:text-slate-400">
           No questions match this filter.
         </p>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+        <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
           <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
+            <thead className="bg-slate-50 dark:bg-slate-900">
               <tr>
                 <th className="px-4 py-3">
                   <SelectAllCheckbox
@@ -231,22 +231,22 @@ export default function QuestionsTable({
                     onChange={toggleSelectAll}
                   />
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Stem
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Subject
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Status
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Date
                 </th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white">
+            <tbody className="divide-y divide-slate-200 bg-white dark:bg-slate-800">
               {filteredQuestions.map((q) => (
                 <tr key={q.id} className={selectedIds.has(q.id) ? "bg-primary-50/40" : ""}>
                   <td className="px-4 py-3">
@@ -254,27 +254,27 @@ export default function QuestionsTable({
                       type="checkbox"
                       checked={selectedIds.has(q.id)}
                       onChange={(e) => toggleRow(q.id, e.target.checked)}
-                      className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                      className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
                       aria-label={`Select question: ${q.stem}`}
                     />
                   </td>
-                  <td className="max-w-sm px-4 py-3 text-sm text-slate-900">
+                  <td className="max-w-sm px-4 py-3 text-sm text-slate-900 dark:text-slate-100">
                     <p className="truncate">{q.stem}</p>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-600">
+                  <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">
                     {q.topics?.systems?.subjects?.name ?? "—"}
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={q.status} />
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-500">
+                  <td className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
                     {formatDate(q.created_at)}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex items-center justify-end gap-4">
                       <a
                         href={`/admin/questions/${q.id}/edit`}
-                        className="text-sm font-medium text-primary-700 hover:text-primary-800"
+                        className="text-sm font-medium text-primary-700 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
                       >
                         Edit
                       </a>
@@ -282,7 +282,7 @@ export default function QuestionsTable({
                         type="button"
                         onClick={() => handleRowDelete(q.id)}
                         disabled={rowDeleting === q.id}
-                        className="text-sm font-medium text-red-600 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="text-sm font-medium text-red-600 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60 dark:text-red-400 dark:hover:text-red-400"
                       >
                         {rowDeleting === q.id ? "Deleting..." : "Delete"}
                       </button>

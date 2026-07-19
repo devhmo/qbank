@@ -39,18 +39,18 @@ export default async function AdminReportsPage() {
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
-      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
+      <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
         Admin
       </p>
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
         Question Reports
       </h1>
-      <p className="mt-2 text-slate-600">
+      <p className="mt-2 text-slate-600 dark:text-slate-400">
         {openCount} open report{openCount === 1 ? "" : "s"} from students.
       </p>
 
       {error && (
-        <p className="mt-6 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-6 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
           Couldn&rsquo;t load reports: {error.message}
         </p>
       )}
