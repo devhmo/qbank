@@ -23,7 +23,7 @@ export default async function AdminPage() {
   ];
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-16">
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
       <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
         Admin
       </p>
@@ -48,7 +48,7 @@ export default async function AdminPage() {
         ))}
       </div>
 
-      <div className="mt-8 flex gap-4">
+      <div className="mt-8 flex flex-wrap gap-3">
         <a
           href="/admin/questions/new"
           className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-700"

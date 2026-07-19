@@ -24,7 +24,7 @@ export default async function NewQuizPage({
     ]);
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-16">
+    <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-16">
       <p className="mb-2 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium uppercase tracking-wide text-primary-700">
         New Quiz
       </p>
