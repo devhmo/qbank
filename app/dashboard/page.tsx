@@ -4,6 +4,7 @@ import StatCard from "@/components/dashboard/StatCard";
 import SubjectPerformanceChart from "@/components/dashboard/SubjectPerformanceChart";
 import AccuracyTrendChart from "@/components/dashboard/AccuracyTrendChart";
 import WeakestTopicsList from "@/components/dashboard/WeakestTopicsList";
+import QuickStartQuizLink from "@/components/dashboard/QuickStartQuizLink";
 import {
   computeAccuracyTrend,
   computeOverallStats,
@@ -138,20 +139,8 @@ export default async function DashboardPage() {
             <div className="rounded-xl border border-slate-200 bg-white p-6">
               <p className="mb-4 text-sm font-medium text-slate-700">Quick links</p>
               <div className="space-y-3">
-                <a
-                  href="/quiz/new?scope=bookmarked"
-                  className="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3 text-sm transition hover:bg-slate-50"
-                >
-                  <span className="font-medium text-slate-800">Bookmarked questions</span>
-                  <span className="text-primary-700">Start quiz &rarr;</span>
-                </a>
-                <a
-                  href="/quiz/new?scope=incorrect"
-                  className="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3 text-sm transition hover:bg-slate-50"
-                >
-                  <span className="font-medium text-slate-800">Previously incorrect</span>
-                  <span className="text-primary-700">Start quiz &rarr;</span>
-                </a>
+                <QuickStartQuizLink scope="bookmarked" label="Bookmarked questions" />
+                <QuickStartQuizLink scope="incorrect" label="Previously incorrect" />
               </div>
             </div>
           </div>
