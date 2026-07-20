@@ -65,7 +65,7 @@ export default function ReportsTable({ initialReports }: { initialReports: Repor
           id="report-status-filter"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-          className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
         >
           <option value="open">Open</option>
           <option value="resolved">Resolved</option>
@@ -81,7 +81,7 @@ export default function ReportsTable({ initialReports }: { initialReports: Repor
         <p className="mt-8 text-sm text-slate-500 dark:text-slate-400">No reports match this filter.</p>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-          <table className="min-w-full divide-y divide-slate-200">
+          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
             <thead className="bg-slate-50 dark:bg-slate-900">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
@@ -102,7 +102,7 @@ export default function ReportsTable({ initialReports }: { initialReports: Repor
                 <th className="px-4 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white dark:bg-slate-800">
+            <tbody className="divide-y divide-slate-200 bg-white dark:divide-slate-700 dark:bg-slate-800">
               {filtered.map((r) => (
                 <tr key={r.id}>
                   <td className="max-w-[16rem] px-4 py-3 text-sm">
@@ -121,8 +121,8 @@ export default function ReportsTable({ initialReports }: { initialReports: Repor
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                         r.status === "open"
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-primary-50 text-primary-700"
+                          ? "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                          : "bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300"
                       }`}
                     >
                       {r.status === "open" ? "Open" : "Resolved"}

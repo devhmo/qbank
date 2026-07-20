@@ -49,7 +49,7 @@ export default function NoteEditor({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={`text-sm font-medium transition ${
-          text.trim() ? "text-primary-700" : "text-slate-400 hover:text-slate-600"
+          text.trim() ? "text-primary-700 dark:text-primary-400" : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
         }`}
       >
         {open ? "Hide note" : text.trim() ? "📝 Edit note" : "📝 Add note"}
@@ -62,7 +62,7 @@ export default function NoteEditor({
             onChange={(e) => handleChange(e.target.value)}
             rows={3}
             placeholder="Write a personal note about this question..."
-            className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
+            className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
             {status === "saving" && "Saving..."}

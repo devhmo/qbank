@@ -100,7 +100,7 @@ function CatalogColumn({
         <p className="px-4 py-6 text-sm text-slate-400 dark:text-slate-500">{disabledMessage}</p>
       ) : (
         <>
-          <ul className="max-h-80 divide-y divide-slate-100 overflow-y-auto">
+          <ul className="max-h-80 divide-y divide-slate-100 overflow-y-auto dark:divide-slate-700">
             {items.length === 0 && (
               <li className="px-4 py-4 text-sm text-slate-400 dark:text-slate-500">None yet.</li>
             )}
@@ -108,7 +108,7 @@ function CatalogColumn({
               <li
                 key={item.id}
                 className={`flex items-center justify-between gap-2 px-4 py-2.5 ${
-                  selectedId === item.id ? "bg-primary-50" : ""
+                  selectedId === item.id ? "bg-primary-50 dark:bg-primary-900/20" : ""
                 }`}
               >
                 {editingId === item.id ? (
@@ -117,7 +117,7 @@ function CatalogColumn({
                       autoFocus
                       value={editingName}
                       onChange={(e) => setEditingName(e.target.value)}
-                      className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600"
+                      className="w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-sm text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                     />
                     <button
                       type="button"
@@ -142,8 +142,8 @@ function CatalogColumn({
                       onClick={() => onSelect(item.id)}
                       className={`flex-1 truncate text-left text-sm ${
                         selectedId === item.id
-                          ? "font-medium text-primary-800"
-                          : "text-slate-700"
+                          ? "font-medium text-primary-800 dark:text-primary-300"
+                          : "text-slate-700 dark:text-slate-300"
                       }`}
                     >
                       {item.name}
@@ -180,7 +180,7 @@ function CatalogColumn({
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder={`New ${title.toLowerCase().replace(/s$/, "")}...`}
-              className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600"
+              className="w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
             />
             <button
               type="submit"

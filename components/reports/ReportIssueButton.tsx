@@ -44,7 +44,7 @@ export default function ReportIssueButton({ questionId }: { questionId: string }
             onChange={(e) => setMessage(e.target.value)}
             rows={3}
             placeholder="What's wrong with this question?"
-            className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
+            className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
           <button

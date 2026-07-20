@@ -59,7 +59,7 @@ export default function QuizTimer({
     <div className="flex items-center gap-3">
       <span
         className={`font-mono text-sm font-medium tabular-nums ${
-          isLow ? "text-red-600" : "text-slate-700"
+          isLow ? "text-red-600 dark:text-red-400" : "text-slate-700 dark:text-slate-300"
         }`}
       >
         {formatTime(remaining)}

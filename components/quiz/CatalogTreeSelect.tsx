@@ -28,9 +28,9 @@ function TriStateCheckbox({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
+        className="h-4 w-4 rounded border-slate-300 bg-white text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-primary-400"
       />
-      <span className={`text-sm ${bold ? "font-medium text-slate-900" : "text-slate-700"}`}>
+      <span className={`text-sm ${bold ? "font-medium text-slate-900 dark:text-slate-100" : "text-slate-700 dark:text-slate-300"}`}>
         {label}
       </span>
     </label>
@@ -113,7 +113,7 @@ export default function CatalogTreeSelect({
                             type="checkbox"
                             checked={selectedTopicIds.has(topic.id)}
                             onChange={(e) => setMany([topic.id], e.target.checked)}
-                            className="h-3.5 w-3.5 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
+                            className="h-3.5 w-3.5 rounded border-slate-300 bg-white text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-primary-400"
                           />
                           <span className="text-sm text-slate-600 dark:text-slate-400">{topic.name}</span>
                         </label>

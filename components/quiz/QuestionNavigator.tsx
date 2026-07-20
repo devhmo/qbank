@@ -25,16 +25,16 @@ export default function QuestionNavigator({
               onClick={() => onJump(index)}
               title={`Question ${index + 1}${item.is_marked ? " (marked)" : ""}${answered ? " — answered" : ""}`}
               className={`relative flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition ${
-                isCurrent ? "ring-2 ring-offset-1 ring-slate-900" : ""
+                isCurrent ? "ring-2 ring-offset-1 ring-slate-900 dark:ring-slate-100 dark:ring-offset-slate-900" : ""
               } ${
                 answered
                   ? "border-primary-600 bg-primary-600 text-white"
-                  : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                  : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
               }`}
             >
               {index + 1}
               {item.is_marked && (
-                <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border border-white bg-amber-500" />
+                <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border border-white bg-amber-500 dark:border-slate-800" />
               )}
             </button>
           );

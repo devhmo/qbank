@@ -40,12 +40,12 @@ export default function ChoiceList({
             <div
               className={`flex items-start gap-2 rounded-lg border p-3 transition ${
                 isCorrectChoice
-                  ? "border-primary-400 bg-primary-50"
+                  ? "border-primary-400 bg-primary-50 dark:border-primary-600 dark:bg-primary-900/30"
                   : isWrongSelected
-                    ? "border-red-300 bg-red-50"
+                    ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/30"
                     : isSelected
-                      ? "border-primary-500 bg-primary-50"
-                      : "border-slate-200 bg-white"
+                      ? "border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/30"
+                      : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
               }`}
             >
               <button
@@ -63,14 +63,14 @@ export default function ChoiceList({
                   className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border text-xs font-medium ${
                     isSelected
                       ? "border-primary-600 bg-primary-600 text-white"
-                      : "border-slate-300 text-slate-500"
+                      : "border-slate-300 text-slate-500 dark:border-slate-600 dark:text-slate-400"
                   }`}
                 >
                   {LETTERS[index] ?? index + 1}
                 </span>
                 <span
                   className={`text-sm ${
-                    isEliminated ? "text-slate-400 line-through" : "text-slate-800"
+                    isEliminated ? "text-slate-400 line-through dark:text-slate-500" : "text-slate-800 dark:text-slate-200"
                   }`}
                 >
                   {choice.text}

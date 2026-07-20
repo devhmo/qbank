@@ -20,7 +20,7 @@ const SCOPE_OPTIONS: { value: QuizScope; label: string }[] = [
 ];
 
 const inputClasses =
-  "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500";
+  "block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500";
 
 export default function QuizNewForm({
   catalog,
@@ -135,7 +135,7 @@ export default function QuizNewForm({
                 type="checkbox"
                 checked={difficulties.has(opt.value)}
                 onChange={() => toggleDifficulty(opt.value)}
-                className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
+                className="h-4 w-4 rounded border-slate-300 bg-white text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-primary-400"
               />
               {opt.label}
             </label>
@@ -151,8 +151,8 @@ export default function QuizNewForm({
               key={opt.value}
               className={`cursor-pointer rounded-lg border px-3 py-2 text-center text-sm transition ${
                 scope === opt.value
-                  ? "border-primary-500 bg-primary-50 font-medium text-primary-700"
-                  : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                  ? "border-primary-500 bg-primary-50 font-medium text-primary-700 dark:border-primary-500 dark:bg-primary-900/30 dark:text-primary-300"
+                  : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               <input
@@ -200,8 +200,8 @@ export default function QuizNewForm({
           <label
             className={`cursor-pointer rounded-lg border p-3 text-sm transition ${
               mode === "tutor"
-                ? "border-primary-500 bg-primary-50"
-                : "border-slate-200 hover:bg-slate-50"
+                ? "border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/30"
+                : "border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
             }`}
           >
             <input
@@ -219,8 +219,8 @@ export default function QuizNewForm({
           <label
             className={`cursor-pointer rounded-lg border p-3 text-sm transition ${
               mode === "timed"
-                ? "border-primary-500 bg-primary-50"
-                : "border-slate-200 hover:bg-slate-50"
+                ? "border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/30"
+                : "border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
             }`}
           >
             <input

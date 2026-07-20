@@ -17,8 +17,8 @@ function StatusBadge({ status }: { status: string }) {
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
         isPublished
-          ? "bg-primary-50 text-primary-700"
-          : "bg-slate-100 text-slate-600"
+          ? "bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300"
+          : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300"
       }`}
     >
       {isPublished ? "Published" : "Draft"}
@@ -55,7 +55,7 @@ function SelectAllCheckbox({
       type="checkbox"
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
-      className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
+      className="h-4 w-4 rounded border-slate-300 bg-white text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-primary-400"
       aria-label="Select all questions"
     />
   );
@@ -176,7 +176,7 @@ export default function QuestionsTable({
             id="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100"
+            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
           >
             <option value="all">All</option>
             <option value="draft">Draft</option>
@@ -221,7 +221,7 @@ export default function QuestionsTable({
         </p>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-          <table className="min-w-full divide-y divide-slate-200">
+          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
             <thead className="bg-slate-50 dark:bg-slate-900">
               <tr>
                 <th className="px-4 py-3">
@@ -246,15 +246,15 @@ export default function QuestionsTable({
                 <th className="px-4 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white dark:bg-slate-800">
+            <tbody className="divide-y divide-slate-200 bg-white dark:divide-slate-700 dark:bg-slate-800">
               {filteredQuestions.map((q) => (
-                <tr key={q.id} className={selectedIds.has(q.id) ? "bg-primary-50/40" : ""}>
+                <tr key={q.id} className={selectedIds.has(q.id) ? "bg-primary-50/40 dark:bg-primary-900/20" : ""}>
                   <td className="px-4 py-3">
                     <input
                       type="checkbox"
                       checked={selectedIds.has(q.id)}
                       onChange={(e) => toggleRow(q.id, e.target.checked)}
-                      className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
+                      className="h-4 w-4 rounded border-slate-300 bg-white text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-primary-400"
                       aria-label={`Select question: ${q.stem}`}
                     />
                   </td>

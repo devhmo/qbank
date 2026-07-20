@@ -30,10 +30,10 @@ export default function ResultsQuestionReview({
         <span
           className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
             isCorrect === null
-              ? "bg-slate-100 text-slate-600"
+              ? "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300"
               : isCorrect
-                ? "bg-primary-50 text-primary-700"
-                : "bg-red-50 text-red-700"
+                ? "bg-primary-50 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300"
+                : "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400"
           }`}
         >
           {isCorrect === null ? "Not answered" : isCorrect ? "Correct" : "Incorrect"}
@@ -58,17 +58,17 @@ export default function ResultsQuestionReview({
               <div
                 className={`flex items-start gap-3 rounded-lg border p-3 ${
                   isCorrectChoice
-                    ? "border-primary-400 bg-primary-50"
+                    ? "border-primary-400 bg-primary-50 dark:border-primary-600 dark:bg-primary-900/30"
                     : isSelected
-                      ? "border-red-300 bg-red-50"
-                      : "border-slate-200 bg-white"
+                      ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/30"
+                      : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
                 }`}
               >
                 <span
                   className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border text-xs font-medium ${
                     isSelected
                       ? "border-slate-500 bg-slate-500 text-white"
-                      : "border-slate-300 text-slate-500"
+                      : "border-slate-300 text-slate-500 dark:border-slate-600 dark:text-slate-400"
                   }`}
                 >
                   {LETTERS[i] ?? i + 1}

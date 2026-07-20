@@ -61,12 +61,12 @@ export default function SearchPanel({ catalog }: { catalog: CatalogLookup }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search question text and explanations..."
-          className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         <select
           value={subjectId}
           onChange={(e) => setSubjectId(e.target.value)}
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:w-56 dark:border-slate-600 dark:text-slate-100"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:w-56 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
         >
           <option value="">All subjects</option>
           {catalog.subjects.map((s) => (

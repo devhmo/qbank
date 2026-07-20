@@ -178,7 +178,7 @@ export default function ImportManager({ catalog }: { catalog: CatalogLookup }) {
               rows={12}
               value={text}
               onChange={(e) => setText(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:text-slate-100"
+              className="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-mono text-xs text-slate-900 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
               placeholder={EXAMPLE_TEXT}
             />
             <input

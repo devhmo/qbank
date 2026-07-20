@@ -7,7 +7,7 @@ import { validateQuestionInput } from "@/lib/validateQuestion";
 import type { CatalogLookup, DifficultyLevel, ParsedQuestion } from "@/types/models";
 
 const inputClasses =
-  "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500";
+  "block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500";
 
 export default function ImportPreviewCard({
   question,
@@ -36,8 +36,8 @@ export default function ImportPreviewCard({
 
   return (
     <div
-      className={`rounded-xl border bg-white ${
-        isValid ? "border-slate-200" : "border-amber-300"
+      className={`rounded-xl border bg-white dark:bg-slate-800 ${
+        isValid ? "border-slate-200 dark:border-slate-700" : "border-amber-300 dark:border-amber-700"
       }`}
     >
       <button
@@ -129,7 +129,7 @@ export default function ImportPreviewCard({
                   onChange={(e) =>
                     onUpdate(question.key, { high_yield: e.target.checked })
                   }
-                  className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:text-primary-400"
+                  className="h-4 w-4 rounded border-slate-300 bg-white text-primary-600 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-primary-400"
                 />
                 High yield
               </label>

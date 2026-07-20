@@ -175,7 +175,7 @@ export default function QuizRunner({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="min-w-0">
             <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
@@ -226,7 +226,7 @@ export default function QuizRunner({
                     type="button"
                     onClick={handleToggleBookmark}
                     className={`rounded px-1 py-1 text-sm font-medium transition ${
-                      current.is_bookmarked ? "text-amber-600" : "text-slate-400 hover:text-slate-600"
+                      current.is_bookmarked ? "text-amber-600 dark:text-amber-400" : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
                     }`}
                   >
                     {current.is_bookmarked ? "★ Bookmarked" : "☆ Bookmark"}
@@ -235,7 +235,7 @@ export default function QuizRunner({
                     type="button"
                     onClick={handleToggleMark}
                     className={`rounded px-1 py-1 text-sm font-medium transition ${
-                      current.is_marked ? "text-primary-700" : "text-slate-400 hover:text-slate-600"
+                      current.is_marked ? "text-primary-700 dark:text-primary-400" : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
                     }`}
                   >
                     {current.is_marked ? "🚩 Marked" : "⚑ Mark for review"}
