@@ -18,18 +18,24 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="border-t border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
-      <div className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-          Everything stays out of your way
-        </h2>
-        <p className="mt-3 max-w-xl text-slate-600 dark:text-slate-400">
-          QBank is intentionally simple. No clutter, no unnecessary steps —
-          just your questions, ready when you are.
-        </p>
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
+    <section
+      id="features"
+      className="border-t border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
+    >
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="text-center md:text-left">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+            Everything stays out of your way
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-slate-600 md:mx-0 dark:text-slate-400">
+            QBank is intentionally simple. No clutter, no unnecessary steps —
+            just your questions, ready when you are.
+          </p>
+        </div>
+
+        <div className="mt-12 divide-y divide-slate-100 md:grid md:grid-cols-3 md:gap-8 md:divide-y-0 dark:divide-slate-700">
           {features.map((feature) => (
-            <div key={feature.title}>
+            <div key={feature.title} className="py-6 first:pt-0 md:py-0">
               <div className="mb-4 h-1 w-10 rounded-full bg-primary-500" />
               <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                 {feature.title}
