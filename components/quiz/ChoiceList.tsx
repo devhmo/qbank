@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import type { QuizChoice, QuizMode } from "@/types/models";
 
 const LETTERS = "ABCDEFGHIJ";
@@ -28,7 +29,7 @@ export default function ChoiceList({
   const showFeedback = mode === "tutor" && answered;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {choices.map((choice, index) => {
         const isEliminated = eliminatedIds.includes(choice.id);
         const isSelected = choice.id === selectedChoiceId;
@@ -38,14 +39,16 @@ export default function ChoiceList({
         return (
           <div key={choice.id}>
             <div
-              className={`flex items-start gap-2 rounded-lg border p-3 transition ${
+              className={`group flex items-start gap-3 rounded-xl border p-3.5 shadow-sm transition ${
                 isCorrectChoice
                   ? "border-primary-400 bg-primary-50 dark:border-primary-600 dark:bg-primary-900/30"
                   : isWrongSelected
                     ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/30"
                     : isSelected
                       ? "border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/30"
-                      : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
+                      : isEliminated
+                        ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900"
+                        : "border-slate-200 bg-white hover:border-primary-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-600"
               }`}
             >
               <button
@@ -60,16 +63,18 @@ export default function ChoiceList({
                 }`}
               >
                 <span
-                  className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border text-xs font-medium ${
+                  className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-semibold transition ${
                     isSelected
-                      ? "border-primary-600 bg-primary-600 text-white"
-                      : "border-slate-300 text-slate-500 dark:border-slate-600 dark:text-slate-400"
+                      ? "bg-primary-600 text-white"
+                      : isCorrectChoice
+                        ? "bg-primary-600 text-white"
+                        : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:group-hover:bg-slate-600"
                   }`}
                 >
                   {LETTERS[index] ?? index + 1}
                 </span>
                 <span
-                  className={`text-sm ${
+                  className={`mt-1 text-sm ${
                     isEliminated ? "text-slate-400 line-through dark:text-slate-500" : "text-slate-800 dark:text-slate-200"
                   }`}
                 >
@@ -81,14 +86,20 @@ export default function ChoiceList({
                 type="button"
                 onClick={() => onToggleEliminate(choice.id)}
                 title={isEliminated ? "Restore this choice" : "Strike out this choice"}
-                className="flex-shrink-0 rounded px-2 py-1 text-xs font-medium text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-400"
+                className={`flex-shrink-0 rounded-full p-1.5 transition ${
+                  isEliminated
+                    ? "bg-slate-200 text-slate-600 hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-300 dark:hover:bg-slate-500"
+                    : "text-slate-300 hover:bg-slate-100 hover:text-slate-500 dark:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-400"
+                }`}
               >
-                {isEliminated ? "Undo" : "Strike"}
+                <X className="h-4 w-4" strokeWidth={isEliminated ? 3 : 2} />
               </button>
             </div>
 
             {showFeedback && choice.explanation && (
-              <p className="mt-1 px-3 text-sm text-slate-600 dark:text-slate-400">{choice.explanation}</p>
+              <p className="mt-1.5 px-3.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {choice.explanation}
+              </p>
             )}
           </div>
         );

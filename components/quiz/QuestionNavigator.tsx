@@ -13,7 +13,7 @@ export default function QuestionNavigator({
 }) {
   return (
     <div>
-      <div className="grid grid-cols-6 gap-2 sm:grid-cols-10">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(2.25rem,1fr))] gap-2">
         {items.map((item, index) => {
           const answered = item.selected_choice_id !== null;
           const isCurrent = index === currentIndex;

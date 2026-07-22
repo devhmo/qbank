@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { NotebookPen } from "lucide-react";
 import { upsertNote } from "@/app/notes/actions";
 
 const SAVE_DELAY_MS = 800;
@@ -43,16 +44,21 @@ export default function NoteEditor({
     }, SAVE_DELAY_MS);
   }
 
+  const hasNote = text.trim().length > 0;
+
   return (
     <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`text-sm font-medium transition ${
-          text.trim() ? "text-primary-700 dark:text-primary-400" : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+        className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition ${
+          hasNote
+            ? "text-primary-700 dark:text-primary-400"
+            : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
         }`}
       >
-        {open ? "Hide note" : text.trim() ? "📝 Edit note" : "📝 Add note"}
+        <NotebookPen className="h-4 w-4" />
+        {hasNote ? "Edit note" : "Add note"}
       </button>
 
       {open && (
@@ -62,7 +68,7 @@ export default function NoteEditor({
             onChange={(e) => handleChange(e.target.value)}
             rows={3}
             placeholder="Write a personal note about this question..."
-            className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500"
+            className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
             {status === "saving" && "Saving..."}

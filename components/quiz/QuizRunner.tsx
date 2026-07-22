@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Bookmark, ChevronLeft, ChevronRight, Flag, LogOut } from "lucide-react";
 import QuestionStem from "@/components/quiz/QuestionStem";
 import ChoiceList from "@/components/quiz/ChoiceList";
 import QuestionNavigator from "@/components/quiz/QuestionNavigator";
@@ -173,10 +174,54 @@ export default function QuizRunner({
     router.push(`/quiz/${quiz.id}/results`);
   }
 
+  const toolsPanel = (
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3 dark:border-slate-700">
+        <button
+          type="button"
+          onClick={handleToggleBookmark}
+          className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition ${
+            current.is_bookmarked
+              ? "text-amber-600 dark:text-amber-400"
+              : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+          }`}
+        >
+          <Bookmark className="h-4 w-4" fill={current.is_bookmarked ? "currentColor" : "none"} />
+          {current.is_bookmarked ? "Bookmarked" : "Bookmark"}
+        </button>
+        <button
+          type="button"
+          onClick={handleToggleMark}
+          className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition ${
+            current.is_marked
+              ? "text-primary-700 dark:text-primary-400"
+              : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+          }`}
+        >
+          <Flag className="h-4 w-4" fill={current.is_marked ? "currentColor" : "none"} />
+          {current.is_marked ? "Marked" : "Mark for review"}
+        </button>
+      </div>
+      <div className="flex flex-wrap items-center gap-2 pt-3">
+        <NoteEditor questionId={current.question.id} initialNote={current.note} />
+        <ReportIssueButton questionId={current.question.id} />
+      </div>
+    </div>
+  );
+
+  const navigatorPanel = (
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+      <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
+        Navigator ({answeredCount} of {items.length} answered)
+      </p>
+      <QuestionNavigator items={items} currentIndex={currentIndex} onJump={goToIndex} />
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="min-w-0">
             <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
               Question {currentIndex + 1} of {items.length}
@@ -202,45 +247,31 @@ export default function QuizRunner({
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-        {error && (
-          <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">{error}</p>
-        )}
+      {error && (
+        <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
+          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
+            {error}
+          </p>
+        </div>
+      )}
 
-        {isPaused ? (
-          <div className="rounded-xl border border-slate-200 bg-white p-16 text-center dark:border-slate-700 dark:bg-slate-800">
+      {isPaused ? (
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-16 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">Quiz paused</p>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Your timer is frozen. Click Resume when you&rsquo;re ready to continue.
             </p>
           </div>
-        ) : (
-          <>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        </div>
+      ) : (
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-6 lg:py-10">
+          <main className="min-w-0">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:border-slate-700 dark:bg-slate-800">
+              <div className="mb-4 flex items-center justify-between gap-3">
                 <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600 dark:bg-slate-700 dark:text-slate-400">
                   {current.question.difficulty}
                 </span>
-                <div className="flex flex-wrap items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={handleToggleBookmark}
-                    className={`rounded px-1 py-1 text-sm font-medium transition ${
-                      current.is_bookmarked ? "text-amber-600 dark:text-amber-400" : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
-                    }`}
-                  >
-                    {current.is_bookmarked ? "★ Bookmarked" : "☆ Bookmark"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleToggleMark}
-                    className={`rounded px-1 py-1 text-sm font-medium transition ${
-                      current.is_marked ? "text-primary-700 dark:text-primary-400" : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
-                    }`}
-                  >
-                    {current.is_marked ? "🚩 Marked" : "⚑ Mark for review"}
-                  </button>
-                </div>
               </div>
 
               {current.question.image_url && (
@@ -273,13 +304,16 @@ export default function QuizRunner({
               </div>
 
               {current.question.source && (
-                <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">Source: {current.question.source}</p>
+                <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
+                  Source: {current.question.source}
+                </p>
               )}
+            </div>
 
-              <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-slate-100 pt-4 dark:border-slate-800">
-                <NoteEditor questionId={current.question.id} initialNote={current.note} />
-                <ReportIssueButton questionId={current.question.id} />
-              </div>
+            {/* Tools + navigator: inline on mobile/tablet, moved into the sidebar at lg+ */}
+            <div className="mt-4 space-y-4 lg:hidden">
+              {toolsPanel}
+              {navigatorPanel}
             </div>
 
             <div className="mt-6 flex items-center justify-between gap-2">
@@ -287,8 +321,9 @@ export default function QuizRunner({
                 type="button"
                 onClick={() => goToIndex(currentIndex - 1)}
                 disabled={currentIndex === 0}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+                className="flex items-center gap-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
               >
+                <ChevronLeft className="h-4 w-4" />
                 Previous
               </button>
 
@@ -296,8 +331,9 @@ export default function QuizRunner({
                 type="button"
                 onClick={() => handleSubmit(false)}
                 disabled={submitting}
-                className="rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 sm:px-4 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/30"
+                className="flex items-center gap-1.5 rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 sm:px-4 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/30"
               >
+                <LogOut className="h-4 w-4" />
                 {submitting ? "Submitting..." : "End Quiz"}
               </button>
 
@@ -305,21 +341,20 @@ export default function QuizRunner({
                 type="button"
                 onClick={() => goToIndex(currentIndex + 1)}
                 disabled={currentIndex === items.length - 1}
-                className="rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4"
+                className="flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4"
               >
                 Next
+                <ChevronRight className="h-4 w-4" />
               </button>
             </div>
+          </main>
 
-            <div className="mt-8 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
-              <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
-                Navigator ({answeredCount} of {items.length} answered)
-              </p>
-              <QuestionNavigator items={items} currentIndex={currentIndex} onJump={goToIndex} />
-            </div>
-          </>
-        )}
-      </main>
+          <aside className="mt-6 hidden space-y-4 lg:sticky lg:top-24 lg:mt-0 lg:block">
+            {toolsPanel}
+            {navigatorPanel}
+          </aside>
+        </div>
+      )}
     </div>
   );
 }

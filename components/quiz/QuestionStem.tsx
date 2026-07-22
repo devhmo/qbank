@@ -76,7 +76,7 @@ export default function QuestionStem({
     <div>
       <div
         ref={containerRef}
-        className="select-text whitespace-pre-wrap text-base leading-relaxed text-slate-800 dark:text-slate-200"
+        className="select-text whitespace-pre-wrap text-[1.05rem] font-medium leading-relaxed text-slate-900 dark:text-slate-100"
       >
         {segments.map((seg, i) =>
           seg.highlighted ? (
@@ -87,7 +87,7 @@ export default function QuestionStem({
                 if (seg.rangeIndex !== null) onRemoveHighlight(seg.rangeIndex);
               }}
               title="Tap to remove highlight"
-              className="cursor-pointer rounded-sm bg-yellow-200 px-0.5"
+              className="cursor-pointer rounded-sm bg-yellow-200 px-0.5 text-slate-900 dark:bg-yellow-300/90"
             >
               {seg.text}
             </mark>
