@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { X } from "lucide-react";
+import { applyChoiceClick, buildInitialState, type RevealState } from "@/lib/choiceRevealState";
 import type { QuizChoice, QuizMode } from "@/types/models";
 
 const LETTERS = "ABCDEFGHIJ";
@@ -10,65 +12,91 @@ export default function ChoiceList({
   selectedChoiceId,
   eliminatedIds,
   mode,
-  onSelect,
+  onAnswer,
   onToggleEliminate,
 }: {
   choices: QuizChoice[];
   selectedChoiceId: string | null;
   eliminatedIds: string[];
   mode: QuizMode;
-  onSelect: (choiceId: string) => void;
+  onAnswer: (choiceId: string) => void;
   onToggleEliminate: (choiceId: string) => void;
 }) {
-  const answered = selectedChoiceId !== null;
-  // Tutor mode locks the answer in once submitted, matching how immediate
-  // feedback is meant to work — Timed/Exam mode shows no feedback, so
-  // there's no reason to lock the answer and every reason to let the
-  // student change their mind before time runs out.
-  const locked = mode === "tutor" && answered;
-  const showFeedback = mode === "tutor" && answered;
+  const [{ revealed, expanded }, setState] = useState<RevealState>(() =>
+    buildInitialState(choices, selectedChoiceId, mode)
+  );
+
+  function handleClick(choiceId: string) {
+    if (eliminatedIds.includes(choiceId)) return;
+
+    if (mode !== "tutor") {
+      // Timed/Exam: no reveal/feedback at all — just a plain, freely
+      // re-selectable pick, matching the existing behavior.
+      onAnswer(choiceId);
+      return;
+    }
+
+    const { state: nextState, shouldAnswer } = applyChoiceClick(
+      { revealed, expanded },
+      choices,
+      choiceId,
+      selectedChoiceId
+    );
+    setState(nextState);
+
+    // The first choice ever clicked is the graded answer — later clicks
+    // (exploring why other choices are wrong, or finding the correct one
+    // after guessing) don't change what was already graded.
+    if (shouldAnswer) {
+      onAnswer(choiceId);
+    }
+  }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {choices.map((choice, index) => {
         const isEliminated = eliminatedIds.includes(choice.id);
         const isSelected = choice.id === selectedChoiceId;
-        const isCorrectChoice = showFeedback && choice.is_correct === true;
-        const isWrongSelected = showFeedback && isSelected && choice.is_correct === false;
+        const isRevealed = mode === "tutor" && revealed.has(choice.id);
+        const isExpanded = expanded.has(choice.id);
+        const isCorrectRevealed = isRevealed && choice.is_correct === true;
+        const isWrongRevealed = isRevealed && choice.is_correct === false;
 
         return (
           <div key={choice.id}>
             <div
-              className={`group flex items-start gap-3 rounded-xl border p-3.5 shadow-sm transition ${
-                isCorrectChoice
-                  ? "border-primary-400 bg-primary-50 dark:border-primary-600 dark:bg-primary-900/30"
-                  : isWrongSelected
-                    ? "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/30"
+              className={`group flex items-start gap-3 rounded-xl border border-l-4 p-3.5 shadow-sm transition ${
+                isCorrectRevealed
+                  ? "border-slate-200 border-l-green-500 bg-green-50 dark:border-slate-700 dark:border-l-green-500 dark:bg-green-900/20"
+                  : isWrongRevealed
+                    ? "border-slate-200 border-l-red-500 bg-red-50 dark:border-slate-700 dark:border-l-red-500 dark:bg-red-900/20"
                     : isSelected
-                      ? "border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/30"
+                      ? "border-primary-500 border-l-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/30"
                       : isEliminated
-                        ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900"
-                        : "border-slate-200 bg-white hover:border-primary-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-600"
+                        ? "border-slate-200 border-l-slate-200 bg-slate-50 dark:border-slate-700 dark:border-l-slate-700 dark:bg-slate-900"
+                        : "border-slate-200 border-l-slate-200 bg-white hover:border-primary-300 hover:border-l-primary-300 hover:shadow-md dark:border-slate-700 dark:border-l-slate-700 dark:bg-slate-800 dark:hover:border-primary-600 dark:hover:border-l-primary-600"
               }`}
             >
               <button
                 type="button"
                 onClick={() => {
-                  if (isEliminated || locked) return;
-                  onSelect(choice.id);
+                  if (isEliminated) return;
+                  handleClick(choice.id);
                 }}
-                disabled={isEliminated || locked}
+                disabled={isEliminated}
                 className={`flex flex-1 items-start gap-3 text-left ${
-                  isEliminated || locked ? "cursor-not-allowed" : "cursor-pointer"
+                  isEliminated ? "cursor-not-allowed" : "cursor-pointer"
                 }`}
               >
                 <span
                   className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-semibold transition ${
-                    isSelected
-                      ? "bg-primary-600 text-white"
-                      : isCorrectChoice
-                        ? "bg-primary-600 text-white"
-                        : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:group-hover:bg-slate-600"
+                    isCorrectRevealed
+                      ? "bg-green-600 text-white"
+                      : isWrongRevealed
+                        ? "bg-red-600 text-white"
+                        : isSelected
+                          ? "bg-primary-600 text-white"
+                          : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:group-hover:bg-slate-600"
                   }`}
                 >
                   {LETTERS[index] ?? index + 1}
@@ -96,7 +124,7 @@ export default function ChoiceList({
               </button>
             </div>
 
-            {showFeedback && choice.explanation && (
+            {isRevealed && isExpanded && choice.explanation && (
               <p className="mt-1.5 px-3.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                 {choice.explanation}
               </p>

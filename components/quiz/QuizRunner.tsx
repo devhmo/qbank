@@ -268,11 +268,13 @@ export default function QuizRunner({
         <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-6 lg:py-10">
           <main className="min-w-0">
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:border-slate-700 dark:bg-slate-800">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600 dark:bg-slate-700 dark:text-slate-400">
-                  {current.question.difficulty}
-                </span>
-              </div>
+              {current.selected_choice_id !== null && (
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600 dark:bg-slate-700 dark:text-slate-400">
+                    {current.question.difficulty}
+                  </span>
+                </div>
+              )}
 
               {current.question.image_url && (
                 <div className="relative mb-4 h-64 w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
@@ -294,11 +296,12 @@ export default function QuizRunner({
 
               <div className="mt-6">
                 <ChoiceList
+                  key={current.question.id}
                   choices={current.question.choices}
                   selectedChoiceId={current.selected_choice_id}
                   eliminatedIds={current.eliminated_choice_ids}
                   mode={quiz.mode}
-                  onSelect={handleSelectChoice}
+                  onAnswer={handleSelectChoice}
                   onToggleEliminate={handleToggleEliminate}
                 />
               </div>
