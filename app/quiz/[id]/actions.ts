@@ -148,6 +148,17 @@ export async function resumeQuiz(quizId: string): Promise<ActionResult> {
   return {};
 }
 
+export async function resetQuizQuestion(quizQuestionId: string): Promise<ActionResult> {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("quiz_questions")
+    .update({ selected_choice_id: null, is_correct: null })
+    .eq("id", quizQuestionId);
+
+  if (error) return { error: error.message };
+  return {};
+}
+
 export async function submitQuiz(quizId: string): Promise<ActionResult> {
   const supabase = createClient();
   const { error } = await supabase

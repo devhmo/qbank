@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { X } from "lucide-react";
-import { applyChoiceClick, buildInitialState, type RevealState } from "@/lib/choiceRevealState";
-import type { QuizChoice, QuizMode } from "@/types/models";
+import type { QuizChoice } from "@/types/models";
 
 const LETTERS = "ABCDEFGHIJ";
 
@@ -11,54 +9,28 @@ export default function ChoiceList({
   choices,
   selectedChoiceId,
   eliminatedIds,
-  mode,
-  onAnswer,
+  revealedIds,
+  expandedIds,
+  showFeedback,
+  onChoiceClick,
   onToggleEliminate,
 }: {
   choices: QuizChoice[];
   selectedChoiceId: string | null;
   eliminatedIds: string[];
-  mode: QuizMode;
-  onAnswer: (choiceId: string) => void;
+  revealedIds: Set<string>;
+  expandedIds: Set<string>;
+  showFeedback: boolean;
+  onChoiceClick: (choiceId: string) => void;
   onToggleEliminate: (choiceId: string) => void;
 }) {
-  const [{ revealed, expanded }, setState] = useState<RevealState>(() =>
-    buildInitialState(choices, selectedChoiceId, mode)
-  );
-
-  function handleClick(choiceId: string) {
-    if (eliminatedIds.includes(choiceId)) return;
-
-    if (mode !== "tutor") {
-      // Timed/Exam: no reveal/feedback at all — just a plain, freely
-      // re-selectable pick, matching the existing behavior.
-      onAnswer(choiceId);
-      return;
-    }
-
-    const { state: nextState, shouldAnswer } = applyChoiceClick(
-      { revealed, expanded },
-      choices,
-      choiceId,
-      selectedChoiceId
-    );
-    setState(nextState);
-
-    // The first choice ever clicked is the graded answer — later clicks
-    // (exploring why other choices are wrong, or finding the correct one
-    // after guessing) don't change what was already graded.
-    if (shouldAnswer) {
-      onAnswer(choiceId);
-    }
-  }
-
   return (
     <div className="space-y-2">
       {choices.map((choice, index) => {
         const isEliminated = eliminatedIds.includes(choice.id);
         const isSelected = choice.id === selectedChoiceId;
-        const isRevealed = mode === "tutor" && revealed.has(choice.id);
-        const isExpanded = expanded.has(choice.id);
+        const isRevealed = showFeedback && revealedIds.has(choice.id);
+        const isExpanded = expandedIds.has(choice.id);
         const isCorrectRevealed = isRevealed && choice.is_correct === true;
         const isWrongRevealed = isRevealed && choice.is_correct === false;
 
@@ -81,7 +53,7 @@ export default function ChoiceList({
                 type="button"
                 onClick={() => {
                   if (isEliminated) return;
-                  handleClick(choice.id);
+                  onChoiceClick(choice.id);
                 }}
                 disabled={isEliminated}
                 className={`flex flex-1 items-start gap-3 text-left ${

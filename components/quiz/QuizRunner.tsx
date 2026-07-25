@@ -3,15 +3,16 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Bookmark, ChevronLeft, ChevronRight, Flag, LogOut } from "lucide-react";
+import { Bookmark, ChevronLeft, ChevronRight, Flag, LogOut, Menu, RotateCcw } from "lucide-react";
 import QuestionStem from "@/components/quiz/QuestionStem";
 import ChoiceList from "@/components/quiz/ChoiceList";
-import QuestionNavigator from "@/components/quiz/QuestionNavigator";
+import QuestionNavigatorDrawer from "@/components/quiz/QuestionNavigatorDrawer";
 import QuizTimer from "@/components/quiz/QuizTimer";
 import NoteEditor from "@/components/notes/NoteEditor";
 import ReportIssueButton from "@/components/reports/ReportIssueButton";
 import {
   pauseQuiz,
+  resetQuizQuestion,
   resumeQuiz,
   saveAnswer,
   submitQuiz,
@@ -19,7 +20,31 @@ import {
   updateQuizQuestionState,
 } from "@/app/quiz/[id]/actions";
 import { mergeRanges } from "@/lib/highlightRanges";
+import {
+  applyChoiceClick,
+  areAllRevealedExpanded,
+  buildInitialState,
+  isCorrectRevealed,
+} from "@/lib/choiceRevealState";
 import type { Quiz, QuizItem } from "@/types/models";
+
+// Extends the server-fetched QuizItem with the client-only exploration
+// state (which choices have been revealed/expanded in Tutor mode). Never
+// persisted as such — only the graded selected_choice_id/is_correct are
+// saved to the database; this is reconstructed once per item at load time
+// from that same graded state (see buildInitialState), then evolves
+// locally as the student clicks around.
+interface RunnerItem extends QuizItem {
+  revealedChoiceIds: string[];
+  expandedChoiceIds: string[];
+}
+
+function toRunnerItems(items: QuizItem[], mode: Quiz["mode"]): RunnerItem[] {
+  return items.map((item) => {
+    const { revealed, expanded } = buildInitialState(item.question.choices, item.selected_choice_id, mode);
+    return { ...item, revealedChoiceIds: [...revealed], expandedChoiceIds: [...expanded] };
+  });
+}
 
 export default function QuizRunner({
   quiz,
@@ -30,7 +55,7 @@ export default function QuizRunner({
 }) {
   const router = useRouter();
 
-  const [items, setItems] = useState<QuizItem[]>(initialItems);
+  const [items, setItems] = useState<RunnerItem[]>(() => toRunnerItems(initialItems, quiz.mode));
   const [currentIndex, setCurrentIndex] = useState(() => {
     const firstUnanswered = initialItems.findIndex((i) => i.selected_choice_id === null);
     return firstUnanswered === -1 ? 0 : firstUnanswered;
@@ -41,21 +66,30 @@ export default function QuizRunner({
   });
   const [pausing, setPausing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [navigatorOpen, setNavigatorOpen] = useState(false);
 
   const questionStartRef = useRef(Date.now());
   const current = items[currentIndex];
   const isPaused = quizMeta.pausedAt !== null;
-  const answeredCount = items.filter((i) => i.selected_choice_id !== null).length;
+  const isTutor = quiz.mode === "tutor";
 
-  function updateItemAt(index: number, patch: Partial<QuizItem>) {
+  const revealedSet = new Set(current.revealedChoiceIds);
+  const expandedSet = new Set(current.expandedChoiceIds);
+  const correctIsRevealed = isCorrectRevealed(current.question.choices, {
+    revealed: revealedSet,
+    expanded: expandedSet,
+  });
+  const allExpanded = areAllRevealedExpanded(current.question.choices, {
+    revealed: revealedSet,
+    expanded: expandedSet,
+  });
+
+  function updateItemAt(index: number, patch: Partial<RunnerItem>) {
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
   }
 
-  // Computes seconds spent on `index` since the last flush, persists the
-  // new total, and resets the clock. Always resets the ref (regardless of
-  // caller) so time is never double-counted across an answer-select and a
-  // subsequent navigation on the same question.
   function flushTimeSpent(index: number): number {
     const now = Date.now();
     const elapsed = Math.round((now - questionStartRef.current) / 1000);
@@ -74,11 +108,73 @@ export default function QuizRunner({
     setCurrentIndex(index);
   }
 
-  async function handleSelectChoice(choiceId: string) {
-    if (isPaused) return;
+  // Persists a choice as the graded answer for the current question.
+  async function persistAnswer(choiceId: string) {
     updateItemAt(currentIndex, { selected_choice_id: choiceId });
     const timeSpentTotal = flushTimeSpent(currentIndex);
     const result = await saveAnswer(current.quizQuestionId, choiceId, timeSpentTotal);
+    if (result.error) setError(result.error);
+  }
+
+  // The single entry point for any choice interaction — direct click,
+  // or "Show Answer" acting exactly as if the correct choice were clicked.
+  async function handleChoiceInteract(choiceId: string) {
+    if (isPaused) return;
+
+    if (!isTutor) {
+      // Timed/Exam: no reveal/feedback — plain, freely re-selectable pick.
+      await persistAnswer(choiceId);
+      return;
+    }
+
+    const { state: nextState, shouldAnswer } = applyChoiceClick(
+      { revealed: revealedSet, expanded: expandedSet },
+      current.question.choices,
+      choiceId,
+      current.selected_choice_id
+    );
+    updateItemAt(currentIndex, {
+      revealedChoiceIds: [...nextState.revealed],
+      expandedChoiceIds: [...nextState.expanded],
+    });
+
+    if (shouldAnswer) {
+      await persistAnswer(choiceId);
+    }
+  }
+
+  function handleShowAnswer() {
+    if (isPaused) return;
+    const correctChoice = current.question.choices.find((c) => c.is_correct);
+    if (!correctChoice) return;
+    handleChoiceInteract(correctChoice.id);
+  }
+
+  function handleToggleAllExplanations() {
+    if (isPaused) return;
+    if (allExpanded) {
+      updateItemAt(currentIndex, { expandedChoiceIds: [] });
+    } else {
+      updateItemAt(currentIndex, { expandedChoiceIds: [...revealedSet] });
+    }
+  }
+
+  async function handleResetQuestion() {
+    if (isPaused || resetting) return;
+    const confirmed = window.confirm(
+      "Reset this question? Your answer and any revealed explanations will be cleared."
+    );
+    if (!confirmed) return;
+
+    setResetting(true);
+    updateItemAt(currentIndex, {
+      selected_choice_id: null,
+      is_correct: null,
+      revealedChoiceIds: [],
+      expandedChoiceIds: [],
+    });
+    const result = await resetQuizQuestion(current.quizQuestionId);
+    setResetting(false);
     if (result.error) setError(result.error);
   }
 
@@ -174,6 +270,13 @@ export default function QuizRunner({
     router.push(`/quiz/${quiz.id}/results`);
   }
 
+  let explanationButtonLabel = "Show Answer";
+  let explanationButtonAction = handleShowAnswer;
+  if (correctIsRevealed) {
+    explanationButtonLabel = allExpanded ? "Hide All Explanations" : "Show All Explanations";
+    explanationButtonAction = handleToggleAllExplanations;
+  }
+
   const toolsPanel = (
     <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3 dark:border-slate-700">
@@ -209,15 +312,6 @@ export default function QuizRunner({
     </div>
   );
 
-  const navigatorPanel = (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-      <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
-        Navigator ({answeredCount} of {items.length} answered)
-      </p>
-      <QuestionNavigator items={items} currentIndex={currentIndex} onJump={goToIndex} />
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
@@ -234,18 +328,37 @@ export default function QuizRunner({
             </div>
           </div>
 
-          <QuizTimer
-            createdAt={quiz.created_at}
-            timeLimitMinutes={quiz.time_limit_minutes}
-            totalPausedSeconds={quizMeta.totalPausedSeconds}
-            pausedAt={quizMeta.pausedAt}
-            pausing={pausing}
-            onPause={handlePause}
-            onResume={handleResume}
-            onExpire={() => handleSubmit(true)}
-          />
+          <div className="flex items-center gap-2">
+            <QuizTimer
+              createdAt={quiz.created_at}
+              timeLimitMinutes={quiz.time_limit_minutes}
+              totalPausedSeconds={quizMeta.totalPausedSeconds}
+              pausedAt={quizMeta.pausedAt}
+              pausing={pausing}
+              onPause={handlePause}
+              onResume={handleResume}
+              onExpire={() => handleSubmit(true)}
+            />
+            <button
+              type="button"
+              onClick={() => setNavigatorOpen(true)}
+              aria-label="Open question navigator"
+              title="Question navigator"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </header>
+
+      <QuestionNavigatorDrawer
+        items={items}
+        currentIndex={currentIndex}
+        open={navigatorOpen}
+        onClose={() => setNavigatorOpen(false)}
+        onJump={goToIndex}
+      />
 
       {error && (
         <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
@@ -296,15 +409,37 @@ export default function QuizRunner({
 
               <div className="mt-6">
                 <ChoiceList
-                  key={current.question.id}
                   choices={current.question.choices}
                   selectedChoiceId={current.selected_choice_id}
                   eliminatedIds={current.eliminated_choice_ids}
-                  mode={quiz.mode}
-                  onAnswer={handleSelectChoice}
+                  revealedIds={revealedSet}
+                  expandedIds={expandedSet}
+                  showFeedback={isTutor}
+                  onChoiceClick={handleChoiceInteract}
                   onToggleEliminate={handleToggleEliminate}
                 />
               </div>
+
+              {isTutor && (
+                <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={explanationButtonAction}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+                  >
+                    {explanationButtonLabel}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleResetQuestion}
+                    disabled={current.revealedChoiceIds.length === 0 || resetting}
+                    className="flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    {resetting ? "Resetting..." : "Reset Question"}
+                  </button>
+                </div>
+              )}
 
               {current.question.source && (
                 <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
@@ -313,11 +448,8 @@ export default function QuizRunner({
               )}
             </div>
 
-            {/* Tools + navigator: inline on mobile/tablet, moved into the sidebar at lg+ */}
-            <div className="mt-4 space-y-4 lg:hidden">
-              {toolsPanel}
-              {navigatorPanel}
-            </div>
+            {/* Tools panel: inline on mobile/tablet, moved into the sidebar at lg+ */}
+            <div className="mt-4 lg:hidden">{toolsPanel}</div>
 
             <div className="mt-6 flex items-center justify-between gap-2">
               <button
@@ -352,10 +484,7 @@ export default function QuizRunner({
             </div>
           </main>
 
-          <aside className="mt-6 hidden space-y-4 lg:sticky lg:top-24 lg:mt-0 lg:block">
-            {toolsPanel}
-            {navigatorPanel}
-          </aside>
+          <aside className="mt-6 hidden lg:sticky lg:top-24 lg:mt-0 lg:block">{toolsPanel}</aside>
         </div>
       )}
     </div>

@@ -71,3 +71,14 @@ export function applyChoiceClick(
     shouldAnswer: isFirstEverClick,
   };
 }
+
+export function isCorrectRevealed(choices: QuizChoice[], state: RevealState): boolean {
+  const correct = choices.find((c) => c.is_correct);
+  return correct ? state.revealed.has(correct.id) : false;
+}
+
+// True once every currently-revealed choice also has its explanation open.
+// (Unrevealed choices don't count against this — they have nothing to show.)
+export function areAllRevealedExpanded(choices: QuizChoice[], state: RevealState): boolean {
+  return choices.every((c) => !state.revealed.has(c.id) || state.expanded.has(c.id));
+}
