@@ -28,21 +28,35 @@ import {
 } from "@/lib/choiceRevealState";
 import type { Quiz, QuizItem } from "@/types/models";
 
-// Extends the server-fetched QuizItem with the client-only exploration
-// state (which choices have been revealed/expanded in Tutor mode). Never
+// Extends the server-fetched QuizItem with client-only exploration state:
+// which choices have been revealed/expanded in Tutor mode, and whether the
+// student has ever navigated to this question ("visited"). None of this is
 // persisted as such — only the graded selected_choice_id/is_correct are
-// saved to the database; this is reconstructed once per item at load time
-// from that same graded state (see buildInitialState), then evolves
-// locally as the student clicks around.
+// saved to the database; revealed/expanded is reconstructed once per item
+// at load time from that same graded state (see buildInitialState), then
+// evolves locally as the student clicks around. `visited` starts true only
+// for the question shown when the quiz loads, and flips to true for any
+// question navigated to afterward.
 interface RunnerItem extends QuizItem {
   revealedChoiceIds: string[];
   expandedChoiceIds: string[];
+  visited: boolean;
 }
 
-function toRunnerItems(items: QuizItem[], mode: Quiz["mode"]): RunnerItem[] {
-  return items.map((item) => {
+function getInitialIndex(items: QuizItem[]): number {
+  const firstUnanswered = items.findIndex((i) => i.selected_choice_id === null);
+  return firstUnanswered === -1 ? 0 : firstUnanswered;
+}
+
+function toRunnerItems(items: QuizItem[], mode: Quiz["mode"], initialIndex: number): RunnerItem[] {
+  return items.map((item, index) => {
     const { revealed, expanded } = buildInitialState(item.question.choices, item.selected_choice_id, mode);
-    return { ...item, revealedChoiceIds: [...revealed], expandedChoiceIds: [...expanded] };
+    return {
+      ...item,
+      revealedChoiceIds: [...revealed],
+      expandedChoiceIds: [...expanded],
+      visited: index === initialIndex,
+    };
   });
 }
 
@@ -55,11 +69,10 @@ export default function QuizRunner({
 }) {
   const router = useRouter();
 
-  const [items, setItems] = useState<RunnerItem[]>(() => toRunnerItems(initialItems, quiz.mode));
-  const [currentIndex, setCurrentIndex] = useState(() => {
-    const firstUnanswered = initialItems.findIndex((i) => i.selected_choice_id === null);
-    return firstUnanswered === -1 ? 0 : firstUnanswered;
-  });
+  const [items, setItems] = useState<RunnerItem[]>(() =>
+    toRunnerItems(initialItems, quiz.mode, getInitialIndex(initialItems))
+  );
+  const [currentIndex, setCurrentIndex] = useState(() => getInitialIndex(initialItems));
   const [quizMeta, setQuizMeta] = useState({
     pausedAt: quiz.paused_at,
     totalPausedSeconds: quiz.total_paused_seconds,
@@ -105,6 +118,9 @@ export default function QuizRunner({
   function goToIndex(index: number) {
     if (index === currentIndex || index < 0 || index >= items.length || isPaused) return;
     flushTimeSpent(currentIndex);
+    if (!items[index].visited) {
+      updateItemAt(index, { visited: true });
+    }
     setCurrentIndex(index);
   }
 

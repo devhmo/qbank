@@ -17,7 +17,7 @@ export default function QuestionNavigatorDrawer({
   onClose,
   onJump,
 }: {
-  items: QuizItem[];
+  items: (QuizItem & { visited: boolean })[];
   currentIndex: number;
   open: boolean;
   onClose: () => void;
@@ -96,9 +96,11 @@ export default function QuestionNavigatorDrawer({
                   <span className="block text-sm font-medium text-slate-900 dark:text-slate-100">
                     Question {index + 1}
                   </span>
-                  <span className="mt-0.5 block truncate text-xs text-slate-500 dark:text-slate-400">
-                    {item.question.stem}
-                  </span>
+                  {item.visited && (
+                    <span className="mt-0.5 block truncate text-xs text-slate-500 dark:text-slate-400">
+                      {item.question.stem}
+                    </span>
+                  )}
                   {answered && (
                     <span
                       className={`mt-0.5 block text-xs font-medium capitalize ${
