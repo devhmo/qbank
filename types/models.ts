@@ -104,9 +104,15 @@ export interface ParsedQuestion {
 export type QuizMode = "tutor" | "timed" | "exam";
 export type QuizScope = "all" | "unanswered" | "incorrect" | "bookmarked";
 
+// `scope` identifies which piece of text a highlight belongs to: the
+// question stem, a specific choice's text, or a specific choice's
+// explanation (see lib/highlightRanges.ts for the scope-key helpers).
+// Omitted/undefined is treated as the stem, so ranges saved before
+// highlighting was extended to choices/explanations keep working.
 export interface HighlightRange {
   start: number;
   end: number;
+  scope?: string;
 }
 
 export interface Quiz {

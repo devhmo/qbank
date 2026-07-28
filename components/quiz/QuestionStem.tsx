@@ -1,104 +1,88 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { splitTextByRanges } from "@/lib/highlightRanges";
-import { getSelectionOffsets } from "@/lib/textSelection";
+import { useEffect, useRef, useState } from "react";
+import { Highlighter } from "lucide-react";
+import HighlightableText from "@/components/quiz/HighlightableText";
+import { STEM_SCOPE } from "@/lib/highlightRanges";
 import type { HighlightRange } from "@/types/models";
 
-// How long to wait after the selection stops changing before committing it
-// as a highlight. Needed because `selectionchange` fires continuously
-// while a selection is being dragged/adjusted, not just once at the end.
-const SELECTION_SETTLE_MS = 350;
+const TOOLTIP_TEXT = "Select text to highlight it. Tap a highlight to remove it.";
+const AUTO_DISMISS_MS = 4000;
 
 export default function QuestionStem({
   text,
   ranges,
+  fontScale,
+  highlightEnabled,
+  onToggleHighlight,
   onAddHighlight,
   onRemoveHighlight,
 }: {
   text: string;
   ranges: HighlightRange[];
-  onAddHighlight: (start: number, end: number) => void;
+  fontScale: number;
+  highlightEnabled: boolean;
+  onToggleHighlight: () => void;
+  onAddHighlight: (scope: string, start: number, end: number) => void;
   onRemoveHighlight: (rangeIndex: number) => void;
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showTip, setShowTip] = useState(false);
+  const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Keep the latest handler in a ref so the document-level listener below
-  // (registered once) always calls the current one without re-subscribing.
-  const onAddHighlightRef = useRef(onAddHighlight);
-  onAddHighlightRef.current = onAddHighlight;
-
+  // Briefly surface the instructional tip whenever highlighting is turned
+  // on, instead of showing it permanently under the stem.
   useEffect(() => {
-    function commitSelection() {
-      const container = containerRef.current;
-      if (!container) return;
-      const offsets = getSelectionOffsets(container);
-      if (offsets) {
-        onAddHighlightRef.current(offsets.start, offsets.end);
-        window.getSelection()?.removeAllRanges();
-      }
+    if (!highlightEnabled) {
+      setShowTip(false);
+      return;
     }
-
-    // `selectionchange` (fired on `document`) is the one event that
-    // reliably covers BOTH mouse drag-selection on desktop AND touch
-    // selection on mobile. `mouseup`/`touchend` alone miss mobile: once a
-    // long-press starts text selection, dragging the native selection
-    // handles is handled entirely by the OS/browser chrome and never
-    // dispatches touch or mouse events back to the page.
-    function handleSelectionChange() {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(commitSelection, SELECTION_SETTLE_MS);
-    }
-
-    document.addEventListener("selectionchange", handleSelectionChange);
+    setShowTip(true);
+    dismissTimer.current = setTimeout(() => setShowTip(false), AUTO_DISMISS_MS);
     return () => {
-      document.removeEventListener("selectionchange", handleSelectionChange);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (dismissTimer.current) clearTimeout(dismissTimer.current);
     };
-  }, []);
-
-  // Cancel any in-flight (not-yet-committed) selection if the stem content
-  // itself changes — e.g. the student navigated to a different question
-  // while a debounce was pending — so it can never be misapplied.
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    };
-  }, [text]);
-
-  const segments = splitTextByRanges(text, ranges);
+  }, [highlightEnabled]);
 
   return (
     <div>
-      <div
-        ref={containerRef}
-        className="select-text whitespace-pre-wrap text-[1.05rem] font-medium leading-relaxed text-slate-900 dark:text-slate-100"
-      >
-        {segments.map((seg, i) =>
-          seg.highlighted ? (
-            <mark
-              key={i}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (seg.rangeIndex !== null) onRemoveHighlight(seg.rangeIndex);
-              }}
-              title="Tap to remove highlight"
-              className="cursor-pointer rounded-sm bg-yellow-200 px-0.5 text-slate-900 dark:bg-yellow-300/90"
-            >
-              {seg.text}
-            </mark>
-          ) : (
-            <span key={i}>{seg.text}</span>
-          )
+      <HighlightableText
+        text={text}
+        scope={STEM_SCOPE}
+        ranges={ranges}
+        enabled={highlightEnabled}
+        onAddHighlight={onAddHighlight}
+        onRemoveHighlight={onRemoveHighlight}
+        className="font-medium leading-relaxed text-slate-900 dark:text-slate-100"
+        style={{ fontSize: `calc(1.05rem * ${fontScale})` }}
+      />
+
+      <div className="relative mt-2 inline-block">
+        <button
+          type="button"
+          onClick={onToggleHighlight}
+          onMouseEnter={() => setShowTip(true)}
+          onMouseLeave={() => setShowTip(false)}
+          aria-pressed={highlightEnabled}
+          aria-label={highlightEnabled ? "Turn off highlighting" : "Turn on highlighting"}
+          title="Highlight text"
+          className={`flex h-7 w-7 items-center justify-center rounded-lg border transition ${
+            highlightEnabled
+              ? "border-amber-300 bg-amber-50 text-amber-600 dark:border-amber-600 dark:bg-amber-900/30 dark:text-amber-400"
+              : "border-slate-200 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:border-slate-700 dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+          }`}
+        >
+          <Highlighter className="h-3.5 w-3.5" />
+        </button>
+
+        {showTip && (
+          <div
+            role="tooltip"
+            className="absolute left-0 top-full z-20 mt-1.5 w-60 rounded-lg border border-slate-200 bg-white p-2 text-xs leading-relaxed text-slate-600 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+          >
+            {TOOLTIP_TEXT}
+          </div>
         )}
       </div>
-      <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
-        Select text to highlight it. Tap a highlight to remove it.
-      </p>
     </div>
   );
 }

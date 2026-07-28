@@ -7,6 +7,7 @@ import { Bookmark, ChevronLeft, ChevronRight, Flag, LogOut, Menu, RotateCcw } fr
 import QuestionStem from "@/components/quiz/QuestionStem";
 import ChoiceList from "@/components/quiz/ChoiceList";
 import QuestionNavigatorDrawer from "@/components/quiz/QuestionNavigatorDrawer";
+import FontSizeControl, { useFontScale } from "@/components/quiz/FontSizeControl";
 import QuizTimer from "@/components/quiz/QuizTimer";
 import NoteEditor from "@/components/notes/NoteEditor";
 import ReportIssueButton from "@/components/reports/ReportIssueButton";
@@ -82,6 +83,8 @@ export default function QuizRunner({
   const [resetting, setResetting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [navigatorOpen, setNavigatorOpen] = useState(false);
+  const [highlightEnabled, setHighlightEnabled] = useState(false);
+  const { scale: fontScale, stepIndex: fontStepIndex, setStep: setFontStep } = useFontScale();
 
   const questionStartRef = useRef(Date.now());
   const current = items[currentIndex];
@@ -226,10 +229,10 @@ export default function QuizRunner({
     updateItemAt(currentIndex, { is_bookmarked: result.isBookmarked ?? item.is_bookmarked });
   }
 
-  function handleAddHighlight(start: number, end: number) {
+  function handleAddHighlight(scope: string, start: number, end: number) {
     if (isPaused) return;
     const item = items[currentIndex];
-    const next = mergeRanges([...item.highlighted_ranges, { start, end }]);
+    const next = mergeRanges([...item.highlighted_ranges, { start, end, scope }]);
     updateItemAt(currentIndex, { highlighted_ranges: next });
     updateQuizQuestionState(item.quizQuestionId, { highlighted_ranges: next });
   }
@@ -397,13 +400,16 @@ export default function QuizRunner({
         <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-6 lg:py-10">
           <main className="min-w-0">
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:border-slate-700 dark:bg-slate-800">
-              {current.selected_choice_id !== null && (
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600 dark:bg-slate-700 dark:text-slate-400">
-                    {current.question.difficulty}
-                  </span>
-                </div>
-              )}
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <span>
+                  {current.selected_choice_id !== null && (
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-600 dark:bg-slate-700 dark:text-slate-400">
+                      {current.question.difficulty}
+                    </span>
+                  )}
+                </span>
+                <FontSizeControl stepIndex={fontStepIndex} onChange={setFontStep} />
+              </div>
 
               {current.question.image_url && (
                 <div className="relative mb-4 h-64 w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
@@ -419,6 +425,9 @@ export default function QuizRunner({
               <QuestionStem
                 text={current.question.stem}
                 ranges={current.highlighted_ranges}
+                fontScale={fontScale}
+                highlightEnabled={highlightEnabled}
+                onToggleHighlight={() => setHighlightEnabled((v) => !v)}
                 onAddHighlight={handleAddHighlight}
                 onRemoveHighlight={handleRemoveHighlight}
               />
@@ -431,8 +440,13 @@ export default function QuizRunner({
                   revealedIds={revealedSet}
                   expandedIds={expandedSet}
                   showFeedback={isTutor}
+                  highlightRanges={current.highlighted_ranges}
+                  highlightEnabled={highlightEnabled}
+                  fontScale={fontScale}
                   onChoiceClick={handleChoiceInteract}
                   onToggleEliminate={handleToggleEliminate}
+                  onAddHighlight={handleAddHighlight}
+                  onRemoveHighlight={handleRemoveHighlight}
                 />
               </div>
 
