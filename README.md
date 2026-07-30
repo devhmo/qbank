@@ -1,12 +1,38 @@
 # QBank
 
-A calm, focused question bank application built with Next.js, TypeScript, Tailwind CSS, and Supabase.
+A calm, focused question bank / quiz platform for personal use with a small
+group of medical student colleagues — think UWorld/AMBOSS, built with
+Next.js, TypeScript, Tailwind CSS, and Supabase.
+
+**Live site:** [qbank-wheat.vercel.app](https://qbank-wheat.vercel.app/)
+
+## Features
+
+- **Auth** — Supabase-backed sign-up/login, full name captured on signup
+- **Admin panel** — manage the question bank, including bulk import
+- **Question CRUD** — create, edit, and organize questions individually or via bulk import
+- **Quiz engine** — configurable quizzes (Tutor/Timed modes, subject/system filters) with:
+  - click-to-color-red/green answer reveal, cascading reveal, collapsed-by-default explanations for untried choices
+  - bookmarking, mark-for-review, and per-question notes
+  - strike-out (eliminate) choices
+  - text highlighting on the question stem, choice text, and explanations
+  - adjustable text size
+  - a collapsible question navigator drawer with per-question status/difficulty and Show Answer / Show All Explanations / Reset Question controls
+  - report-a-question-error flow
+- **Dashboard** — progress and performance overview
+- **Search** — full-text question search
+- **Reporting** — review flagged/reported questions
+
+Design language: calm professional blue palette, full Dark Mode support,
+mobile-first (tablet is the primary device), [lucide-react](https://lucide.dev/)
+icons throughout (no emoji).
 
 ## Stack
 
 - **Next.js 14** (App Router) + TypeScript
 - **Tailwind CSS** for styling
 - **Supabase** for database, authentication, and file storage
+- Deployed on **Vercel**
 
 ## Getting started
 
@@ -55,3 +81,4 @@ roles work and how to regenerate types after applying a migration.
 This project is ready to deploy on [Vercel](https://vercel.com). See the
 deployment walkthrough shared alongside this project for step-by-step
 instructions.
+
