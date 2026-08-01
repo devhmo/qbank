@@ -1,19 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { NotebookPen } from "lucide-react";
 import { upsertNote } from "@/app/notes/actions";
 
 const SAVE_DELAY_MS = 800;
 
+// Renders just the note textarea + save status. The caller (QuestionActionsRow)
+// owns whether this is shown at all, and is notified of every edit via
+// onNoteChange so it can keep its "has a note" indicator in sync even after
+// this panel unmounts.
 export default function NoteEditor({
   questionId,
   initialNote,
+  onNoteChange,
 }: {
   questionId: string;
   initialNote: string;
+  onNoteChange?: (text: string) => void;
 }) {
-  const [open, setOpen] = useState(initialNote.trim().length > 0);
   const [text, setText] = useState(initialNote);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -23,7 +27,6 @@ export default function NoteEditor({
   // instance is reused rather than remounted).
   useEffect(() => {
     setText(initialNote);
-    setOpen(initialNote.trim().length > 0);
     setStatus("idle");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionId]);
@@ -36,6 +39,7 @@ export default function NoteEditor({
 
   function handleChange(value: string) {
     setText(value);
+    onNoteChange?.(value);
     setStatus("saving");
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(async () => {
@@ -44,41 +48,23 @@ export default function NoteEditor({
     }, SAVE_DELAY_MS);
   }
 
-  const hasNote = text.trim().length > 0;
-
   return (
-    <div>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition ${
-          hasNote
-            ? "text-primary-700 dark:text-primary-400"
-            : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
-        }`}
-      >
-        <NotebookPen className="h-4 w-4" />
-        {hasNote ? "Edit note" : "Add note"}
-      </button>
-
-      {open && (
-        <div className="mt-2">
-          <textarea
-            value={text}
-            onChange={(e) => handleChange(e.target.value)}
-            rows={3}
-            placeholder="Write a personal note about this question..."
-            className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
-          />
-          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-            {status === "saving" && "Saving..."}
-            {status === "saved" && "Saved"}
-            {status === "error" && (
-              <span className="text-red-500 dark:text-red-400">Couldn&rsquo;t save — check your connection.</span>
-            )}
-          </p>
-        </div>
-      )}
+    <div className="w-full">
+      <textarea
+        value={text}
+        onChange={(e) => handleChange(e.target.value)}
+        rows={3}
+        autoFocus
+        placeholder="Write a personal note about this question..."
+        className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+      />
+      <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+        {status === "saving" && "Saving..."}
+        {status === "saved" && "Saved"}
+        {status === "error" && (
+          <span className="text-red-500 dark:text-red-400">Couldn&rsquo;t save — check your connection.</span>
+        )}
+      </p>
     </div>
   );
 }

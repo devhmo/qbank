@@ -3,14 +3,13 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Bookmark, ChevronLeft, ChevronRight, Flag, LogOut, Menu, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut, Menu, RotateCcw } from "lucide-react";
 import QuestionStem from "@/components/quiz/QuestionStem";
 import ChoiceList from "@/components/quiz/ChoiceList";
+import QuestionActionsRow from "@/components/quiz/QuestionActionsRow";
 import QuestionNavigatorDrawer from "@/components/quiz/QuestionNavigatorDrawer";
 import FontSizeControl, { useFontScale } from "@/components/quiz/FontSizeControl";
 import QuizTimer from "@/components/quiz/QuizTimer";
-import NoteEditor from "@/components/notes/NoteEditor";
-import ReportIssueButton from "@/components/reports/ReportIssueButton";
 import {
   pauseQuiz,
   resetQuizQuestion,
@@ -229,6 +228,10 @@ export default function QuizRunner({
     updateItemAt(currentIndex, { is_bookmarked: result.isBookmarked ?? item.is_bookmarked });
   }
 
+  function handleNoteChange(text: string) {
+    updateItemAt(currentIndex, { note: text });
+  }
+
   function handleAddHighlight(scope: string, start: number, end: number) {
     if (isPaused) return;
     const item = items[currentIndex];
@@ -296,41 +299,6 @@ export default function QuizRunner({
     explanationButtonAction = handleToggleAllExplanations;
   }
 
-  const toolsPanel = (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3 dark:border-slate-700">
-        <button
-          type="button"
-          onClick={handleToggleBookmark}
-          className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition ${
-            current.is_bookmarked
-              ? "text-amber-600 dark:text-amber-400"
-              : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
-          }`}
-        >
-          <Bookmark className="h-4 w-4" fill={current.is_bookmarked ? "currentColor" : "none"} />
-          {current.is_bookmarked ? "Bookmarked" : "Bookmark"}
-        </button>
-        <button
-          type="button"
-          onClick={handleToggleMark}
-          className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition ${
-            current.is_marked
-              ? "text-primary-700 dark:text-primary-400"
-              : "text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
-          }`}
-        >
-          <Flag className="h-4 w-4" fill={current.is_marked ? "currentColor" : "none"} />
-          {current.is_marked ? "Marked" : "Mark for review"}
-        </button>
-      </div>
-      <div className="flex flex-wrap items-center gap-2 pt-3">
-        <NoteEditor questionId={current.question.id} initialNote={current.note} />
-        <ReportIssueButton questionId={current.question.id} />
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
@@ -397,7 +365,7 @@ export default function QuizRunner({
           </div>
         </div>
       ) : (
-        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-6 lg:py-10">
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:py-10">
           <main className="min-w-0">
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:border-slate-700 dark:bg-slate-800">
               <div className="mb-4 flex items-center justify-between gap-3">
@@ -427,9 +395,20 @@ export default function QuizRunner({
                 ranges={current.highlighted_ranges}
                 fontScale={fontScale}
                 highlightEnabled={highlightEnabled}
-                onToggleHighlight={() => setHighlightEnabled((v) => !v)}
                 onAddHighlight={handleAddHighlight}
                 onRemoveHighlight={handleRemoveHighlight}
+              />
+
+              <QuestionActionsRow
+                questionId={current.question.id}
+                note={current.note}
+                onNoteChange={handleNoteChange}
+                isBookmarked={current.is_bookmarked}
+                onToggleBookmark={handleToggleBookmark}
+                isMarked={current.is_marked}
+                onToggleMark={handleToggleMark}
+                highlightEnabled={highlightEnabled}
+                onToggleHighlight={() => setHighlightEnabled((v) => !v)}
               />
 
               <div className="mt-6">
@@ -478,9 +457,6 @@ export default function QuizRunner({
               )}
             </div>
 
-            {/* Tools panel: inline on mobile/tablet, moved into the sidebar at lg+ */}
-            <div className="mt-4 lg:hidden">{toolsPanel}</div>
-
             <div className="mt-6 flex items-center justify-between gap-2">
               <button
                 type="button"
@@ -513,8 +489,6 @@ export default function QuizRunner({
               </button>
             </div>
           </main>
-
-          <aside className="mt-6 hidden lg:sticky lg:top-24 lg:mt-0 lg:block">{toolsPanel}</aside>
         </div>
       )}
     </div>
